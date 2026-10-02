@@ -1,0 +1,11 @@
+﻿Found HashiCorp Terraform [Hashicorp.Terraform] Version 1.16.4
+This application is licensed to you by its owner.
+Microsoft is not responsible for, nor does it grant any licenses to, third-party packages.
+Downloading https://releases.hashicorp.com/terraform/1.16.4/terraform_1.16.4_windows_amd64.zip
+Successfully verified installer hash
+Extracting archive...
+Successfully extracted archive
+Starting package install...
+Path environment variable modified; restart your shell to use the new value.
+Command line alias added: "terraform"
+Successfully installed

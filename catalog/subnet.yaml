@@ -1,0 +1,26 @@
+kind: subnet
+azureType: azurerm_subnet
+abbr: snet
+module: Modules/Network/subnet
+stack: Network
+category: Network
+icon: subnet
+required: [name, rgName, virtual_network_name]
+optional:
+  - name: address_prefixes
+    type: list(string)
+    default: '["10.0.1.0/24"]'
+    description: Address prefixes for the subnet.
+  - name: service_endpoints
+    type: list(string)
+    default: "[]"
+    description: Service endpoints enabled on the subnet.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Subnet tags merged with the stack tags.
+sockets:
+  - name: vnet
+    kind: vnet
+    required: true
+blocks: []

@@ -1,0 +1,22 @@
+kind: vnet
+azureType: azurerm_virtual_network
+abbr: vnet
+module: Modules/Network/Vnet/virtualNetwork
+stack: Network
+category: Network
+icon: vnet
+required: [name, rgName, location]
+optional:
+  - name: address_space
+    type: list(string)
+    default: '["10.0.0.0/16"]'
+    description: Address space for the virtual network.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Virtual network tags merged with the stack tags.
+sockets:
+  - name: resource_group
+    kind: resource_group
+    required: true
+blocks: []

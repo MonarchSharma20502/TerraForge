@@ -1,0 +1,5 @@
+﻿GO_INSTALLED
+go version go1.27.0 windows/amd64
+GOPATH=C:\Users\monar\go
+TF_MISSING
+PATH_GO=
