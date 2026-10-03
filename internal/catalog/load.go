@@ -1,10 +1,11 @@
 package catalog
 
 import (
-	"embed"
 	"fmt"
+	"io/fs"
 	"os"
 	"path/filepath"
+	"sort"
 	"strings"
 
 	"gopkg.in/yaml.v3"
@@ -12,65 +13,72 @@ import (
 
 // Load reads every .yaml entry under dir and returns the assembled catalog.
 func Load(dir string) (*Catalog, error) {
-	c := &Catalog{Kinds: map[string]*Entry{}}
-	entries, err := os.ReadDir(dir)
+	return LoadFS(os.DirFS(dir))
+}
+
+// LoadFS reads every .yaml entry reachable from fsys. Callers pass either a
+// directory on disk or an embedded copy of the catalog data; the WASM build has
+// no filesystem, so it uses the embedded one.
+func LoadFS(fsys fs.FS) (*Catalog, error) {
+	names, err := fs.ReadDir(fsys, ".")
 	if err != nil {
-		return nil, fmt.Errorf("catalog: read dir %s: %w", dir, err)
+		return nil, fmt.Errorf("catalog: read dir: %w", err)
 	}
-	for _, e := range entries {
+	var yamlNames []string
+	for _, e := range names {
 		if e.IsDir() {
 			continue
 		}
-		name := e.Name()
-		if !strings.HasSuffix(name, ".yaml") {
-			continue
+		if strings.HasSuffix(e.Name(), ".yaml") {
+			yamlNames = append(yamlNames, e.Name())
 		}
-		path := filepath.Join(dir, name)
-		data, err := os.ReadFile(path)
+	}
+	sort.Strings(yamlNames)
+
+	c := &Catalog{Kinds: map[string]*Entry{}}
+	for _, name := range yamlNames {
+		data, err := fs.ReadFile(fsys, name)
 		if err != nil {
-			return nil, fmt.Errorf("catalog: read %s: %w", path, err)
+			return nil, fmt.Errorf("catalog: read %s: %w", name, err)
 		}
 		var entry Entry
 		if err := yaml.Unmarshal(data, &entry); err != nil {
-			return nil, fmt.Errorf("catalog: parse %s: %w", path, err)
+			return nil, fmt.Errorf("catalog: parse %s: %w", name, err)
 		}
 		if entry.Kind == "" {
-			return nil, fmt.Errorf("catalog: %s has no kind", path)
+			return nil, fmt.Errorf("catalog: %s has no kind", name)
 		}
 		c.Kinds[entry.Kind] = &entry
 	}
 	return c, nil
 }
 
-// LoadEmbedded reads catalog entries from the embedded filesystem. This is what
-// the CLI and the WASM build use so the catalog ships inside the binary.
-//
-//go:embed *.yaml
-var embedded embed.FS
+// candidateDirs are the places the catalog data may live, relative to the
+// working directory. The plan keeps catalog/ at the repo root as DATA.
+var candidateDirs = []string{
+	"catalog",
+	"../catalog",
+	"../../catalog",
+	"../../../catalog",
+}
 
-// LoadDefault returns the catalog compiled into this binary.
+// LoadDefault finds and loads the catalog data from the repo layout.
 func LoadDefault() (*Catalog, error) {
-	c := &Catalog{Kinds: map[string]*Entry{}}
-	entries, err := embedded.ReadDir(".")
-	if err != nil {
-		return nil, fmt.Errorf("catalog: embedded read: %w", err)
-	}
-	for _, e := range entries {
-		if e.IsDir() || !strings.HasSuffix(e.Name(), ".yaml") {
+	var lastErr error
+	for _, dir := range candidateDirs {
+		if _, err := os.Stat(dir); err != nil {
+			lastErr = err
 			continue
 		}
-		data, err := embedded.ReadFile(e.Name())
-		if err != nil {
-			return nil, fmt.Errorf("catalog: embedded %s: %w", e.Name(), err)
-		}
-		var entry Entry
-		if err := yaml.Unmarshal(data, &entry); err != nil {
-			return nil, fmt.Errorf("catalog: embedded parse %s: %w", e.Name(), err)
-		}
-		if entry.Kind == "" {
-			return nil, fmt.Errorf("catalog: embedded %s has no kind", e.Name())
-		}
-		c.Kinds[entry.Kind] = &entry
+		return Load(dir)
 	}
-	return c, nil
+	if lastErr == nil {
+		lastErr = fmt.Errorf("catalog: no candidate directory found")
+	}
+	return nil, lastErr
+}
+
+// CleanPath joins dir and name the way LoadFS consumed them.
+func CleanPath(dir, name string) string {
+	return filepath.Join(dir, name)
 }

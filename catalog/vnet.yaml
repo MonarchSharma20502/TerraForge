@@ -15,8 +15,10 @@ optional:
     type: map(string)
     default: "{}"
     description: Virtual network tags merged with the stack tags.
+args:
+  rgName: resource_group_name
 sockets:
-  - name: resource_group
+  - name: rgName
     kind: resource_group
     required: true
 blocks: []

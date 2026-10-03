@@ -1,0 +1,24 @@
+apiVersion: autonation/v1
+metadata:
+  businessUnit: test
+  platform: platform
+  environment: Production
+  location: Southeast Asia
+  subscriptionId: 00000000-0000-0000-0000-000000000000
+  owner: platform-team
+  tags:
+    Environment: Production
+    Owner: platform-team
+resources:
+  resource_group:
+    hub:
+      tags:
+        Service: hub
+  vnet:
+    spokevnet:
+      address_space:
+        - 10.0.0.0/16
+  subnet:
+    aml:
+      address_prefixes:
+        - 10.0.1.0/24

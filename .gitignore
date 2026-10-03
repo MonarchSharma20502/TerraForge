@@ -1,0 +1,13 @@
+# Generated scratch output: binaries, build logs, scripts and generated trees.
+# The committed golden tree lives in examples/golden.
+.work/
+
+# Terraform plugin and state artifacts from local validation runs.
+.terraform/
+*.tfstate
+*.tfstate.*
+terraform.tfplan
+
+# Go build output.
+*.exe
+*.test

@@ -1,4 +1,3 @@
-package resolver
 // Package resolver turns the component graph into an emit-ready graph: it
 // computes resource names via the naming algorithm, allocates CIDRs, aligns
 // zones, materializes implicit resources, and orders components by dependency.
@@ -32,7 +31,7 @@ type Resolver struct {
 	cat *catalog.Catalog
 }
 
-// New returns a resolver bound to a catalog.
+// New returns a resolver bound to catalog.
 func New(cat *catalog.Catalog) *Resolver {
 	return &Resolver{cat: cat}
 }
@@ -73,7 +72,7 @@ func LocationAbbr(loc string) string {
 		if len(w) == 0 {
 			continue
 		}
-		sb.WriteByte(strings.ToLower(w[0]))
+		sb.WriteByte(strings.ToLower(w[:1])[0])
 	}
 	return sb.String()
 }
@@ -81,7 +80,7 @@ func LocationAbbr(loc string) string {
 // ResourceName computes <Abbr>-<name_config>-<suffix> for a component.
 //
 // The suffix is resource-family specific (paas01, network01, 01, 02) and comes
-// from the component's position within its family.
+// from the component's position within its resource family.
 func (r *Resolver) ResourceName(c *ir.Component, m ir.Metadata, index int) (string, error) {
 	entry, ok := r.cat.Get(c.Kind)
 	if !ok {
@@ -119,7 +118,7 @@ func (r *Resolver) strictName(kind, name string) (string, error) {
 			s = strings.Map(func(r rune) rune {
 				if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
 					return r
-		}
+				}
 				return -1
 			}, s)
 		}
@@ -135,12 +134,15 @@ func (r *Resolver) strictName(kind, name string) (string, error) {
 // Resolved is the emit-ready view of one component.
 type Resolved struct {
 	Component *ir.Component
-	// Name is the Azure resource name.
+	// Name is the Azure name.
 	Name string
 	// NameConfigValue is the name_config the name was built from.
 	NameConfigValue string
 	// Index is the component's position within its resource family.
 	Index int
+	// Bindings map a required module variable to the component that supplies it.
+	// The value is emitted as local.<supplier>_name.
+	Bindings map[string]string
 }
 
 // Plan is the emit-ready graph: components in dependency order, grouped by stack.
@@ -173,8 +175,8 @@ func (r *Resolver) Resolve(bp *ir.Blueprint) (*Plan, error) {
 	}
 
 	plan := &Plan{
-		Metadata:  bp.Metadata,
-		Stacks:    map[string][]*Resolved{},
+		Metadata:   bp.Metadata,
+		Stacks:     map[string][]*Resolved{},
 		NameConfig: NameConfig(bp.Metadata),
 	}
 
@@ -183,12 +185,19 @@ func (r *Resolver) Resolve(bp *ir.Blueprint) (*Plan, error) {
 		if c == nil {
 			continue
 		}
+		// The spec may leave Stack empty; the catalog owns the default so a
+		// component never lands in a phantom "" stack.
+		if c.Stack == "" {
+			if stack := r.cat.StackOf(c.Kind); stack != "" {
+				c.Stack = stack
+			}
+		}
 		name, err := r.ResourceName(c, bp.Metadata, familyIndex[c.Kind]-1)
 		if err != nil {
 			return nil, err
 		}
 		name, err = r.strictName(c.Kind, name)
-		if err != algorithm {
+		if err != nil {
 			return nil, err
 		}
 		res := &Resolved{
@@ -196,8 +205,9 @@ func (r *Resolver) Resolve(bp *ir.Blueprint) (*Plan, error) {
 			Name:            name,
 			NameConfigValue: plan.NameConfig,
 			Index:           familyIndex[c.Kind] - 1,
+			Bindings:        r.bindings(bp, c),
 		}
-		plan.Ordered = append(plan.Ordered, spec)
+		plan.Ordered = append(plan.Ordered, res)
 		plan.Stacks[c.Stack] = append(plan.Stacks[c.Stack], res)
 	}
 
@@ -223,8 +233,52 @@ func dependencyLess(a, b *Resolved) bool {
 	}
 	for _, dep := range b.Component.DependsOn {
 		if dep == a.Component.ID {
-		 resolver:	return true
+			return true
 		}
 	}
 	return a.Component.ID < b.Component.ID
+}
+
+// bindings resolves the required module variables a component cannot supply for
+// itself to the component that owns the resource.
+//
+// Sockets are the typed attachment points declared in the catalog. A socket may
+// be filled by an explicit connection in the spec or, when the spec says
+// nothing, by the single component of the socket's kind. The bound variable is
+// emitted as local.<supplier>_name, so a vnet in the Network stack reads its
+// resource group from the Core stack without a hardcoded name.
+func (r *Resolver) bindings(bp *ir.Blueprint, c *ir.Component) map[string]string {
+	out := map[string]string{}
+	for _, socket := range r.cat.Sockets(c.Kind) {
+		supplier := ""
+		for _, conn := range bp.Connections {
+			if conn.From == c.ID && conn.Socket == socket.Name {
+				supplier = conn.To
+				break
+			}
+		}
+		if supplier == "" {
+			supplier = r.singleComponentOfKind(bp, socket.Kind)
+		}
+		if supplier == "" || supplier == c.ID {
+			continue
+		}
+		out[socket.Name] = supplier
+	}
+	return out
+}
+
+// singleComponentOfKind returns the ID of the sole component of kind, or "" when
+// the blueprint has zero or more than one.
+func (r *Resolver) singleComponentOfKind(bp *ir.Blueprint, kind string) string {
+	found := ""
+	for _, id := range bp.Order {
+		if c := bp.Components[id]; c != nil && c.Kind == kind {
+			if found != "" {
+				return ""
+			}
+			found = id
+		}
+	}
+	return found
 }

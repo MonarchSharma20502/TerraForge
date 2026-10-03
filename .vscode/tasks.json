@@ -91,6 +91,76 @@
 				"D:\\Auto-nation\\.work\\gomod2.ps1"
 			],
 			"group": "build"
+		},
+		{
+			"label": "toolcheck-ui-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\toolcheck2.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "wasm-build-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\wasm.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "wasm-build-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\wasm2.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "wasm-build-3",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\wasm.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "wasm-build-4",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\wasm3.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
 		}
 	]
 }

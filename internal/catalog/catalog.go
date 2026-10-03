@@ -39,6 +39,11 @@ type Entry struct {
 	// Optional are the module variables that always carry a safe default.
 	Optional []Var `yaml:"optional,omitempty"`
 
+	// Args renames a module variable to the resource attribute it maps to when
+	// the two differ, e.g. rgName -> resource_group_name. Keys are module
+	// variable names, values are resource attribute names.
+	Args map[string]string `yaml:"args,omitempty"`
+
 	// Sockets are the typed attachment points this kind exposes.
 	Sockets []Socket `yaml:"sockets,omitempty"`
 
@@ -100,12 +105,28 @@ func (c *Catalog) Get(kind string) (*Entry, bool) {
 	return e, ok
 }
 
-// Kinds returns the sorted list of kind keys.
-func (c *Catalog) Kinds() []string {
+// KindList returns the sorted list of kind keys.
+func (c *Catalog) KindList() []string {
 	out := make([]string, 0, len(c.Kinds))
 	for k := range c.Kinds {
 		out = append(out, k)
 	}
 	sortStrings(out)
 	return out
+}
+
+// Sockets returns the sockets kind exposes, or nil when it has none.
+func (c *Catalog) Sockets(kind string) []Socket {
+	if e, ok := c.Kinds[kind]; ok {
+		return e.Sockets
+	}
+	return nil
+}
+
+// StackOf returns the default Workload stack for kind, or "" when unknown.
+func (c *Catalog) StackOf(kind string) string {
+	if e, ok := c.Kinds[kind]; ok {
+		return e.Stack
+	}
+	return ""
 }

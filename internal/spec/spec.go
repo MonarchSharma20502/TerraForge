@@ -7,8 +7,11 @@
 package spec
 
 import (
+	"bytes"
 	"encoding/json"
 	"fmt"
+
+	"gopkg.in/yaml.v3"
 
 	"github.com/autonation/autonation/internal/ir"
 )
@@ -86,12 +89,33 @@ func ParseJSON(data []byte) (*ir.Blueprint, error) {
 	return Parse(&s)
 }
 
+// ParseYAML parses a YAML spec document.
+func ParseYAML(data []byte) (*ir.Blueprint, error) {
+	var s Spec
+	if err := yaml.Unmarshal(data, &s); err != nil {
+		return nil, fmt.Errorf("spec: invalid yaml: %w", err)
+	}
+	return Parse(&s)
+}
+
+// ParseDocument parses a spec document in either JSON or YAML.
+//
+// The DSL is authored as YAML in examples and edited as JSON in the UI; both
+// shapes decode into the same Spec.
+func ParseDocument(data []byte) (*ir.Blueprint, error) {
+	trimmed := bytes.TrimSpace(data)
+	if len(trimmed) > 0 && trimmed[0] == '{' {
+		return ParseJSON(data)
+	}
+	return ParseYAML(data)
+}
+
 // buildComponent lifts one resource family entry into a component.
 func buildComponent(kind, id string, props any) (*ir.Component, error) {
 	c := &ir.Component{
-		ID:       id,
-		Kind:     kind,
-		Stack:    stackFor(kind),
+		ID:         id,
+		Kind:       kind,
+		Stack:      stackFor(kind),
 		Properties: map[string]any{},
 	}
 	if id == "" {

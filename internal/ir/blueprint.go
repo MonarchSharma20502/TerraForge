@@ -24,14 +24,14 @@ type Blueprint struct {
 
 // Metadata holds the project-level naming and deployment context.
 type Metadata struct {
-	BusinessUnit  string
-	Platform      string
-	Environment   string
-	Location      string
-	Subscription  string
-	BU            string // alias of BusinessUnit, kept for naming symmetry
-	Owner         string
-	Tags          map[string]string
+	BusinessUnit string
+	Platform     string
+	Environment  string
+	Location     string
+	Subscription string
+	BU           string // alias of BusinessUnit, kept for naming symmetry
+	Owner        string
+	Tags         map[string]string
 }
 
 // Component is a node in the graph: one Azure resource instance.

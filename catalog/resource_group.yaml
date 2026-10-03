@@ -5,10 +5,11 @@ module: Modules/resourceGroup
 stack: Core
 category: Security
 icon: resource-group
-required: [name]
+required: [name, location]
 optional:
   - name: tags
     type: map(string)
     default: "{}"
     description: Resource group tags merged with the stack tags.
+args: {}
 sockets: []

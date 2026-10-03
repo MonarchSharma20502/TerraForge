@@ -21,7 +21,7 @@ func SchemaJSON() map[string]any {
 		"required":             []string{"apiVersion", "metadata"},
 		"properties": map[string]any{
 			"apiVersion": map[string]any{
-				"type": "string",
+				"type":  "string",
 				"const": "autonation/v1",
 			},
 			"metadata": map[string]any{
@@ -29,12 +29,12 @@ func SchemaJSON() map[string]any {
 				"additionalProperties": false,
 				"required":             []string{"businessUnit", "platform", "environment", "location"},
 				"properties": map[string]any{
-					"businessUnit": map[string]any{"type": "string"},
-					"platform":     map[string]any{"type": "string"},
-					"environment":  map[string]any{"type": "string"},
-					"location":     map[string]any{"type": "string"},
+					"businessUnit":   map[string]any{"type": "string"},
+					"platform":       map[string]any{"type": "string"},
+					"environment":    map[string]any{"type": "string"},
+					"location":       map[string]any{"type": "string"},
 					"subscriptionId": map[string]any{"type": "string"},
-					"owner":        map[string]any{"type": "string"},
+					"owner":          map[string]any{"type": "string"},
 					"tags": map[string]any{
 						"type":                 "object",
 						"additionalProperties": map[string]any{"type": "string"},
@@ -42,7 +42,7 @@ func SchemaJSON() map[string]any {
 				},
 			},
 			"resources": map[string]any{
-				"type":                 "object",
+				"type": "object",
 				"additionalProperties": map[string]any{
 					"type":                 "object",
 					"additionalProperties": true,

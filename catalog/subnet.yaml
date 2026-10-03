@@ -11,16 +11,13 @@ optional:
     type: list(string)
     default: '["10.0.1.0/24"]'
     description: Address prefixes for the subnet.
-  - name: service_endpoints
-    type: list(string)
-    default: "[]"
-    description: Service endpoints enabled on the subnet.
-  - name: tags
-    type: map(string)
-    default: "{}"
-    description: Subnet tags merged with the stack tags.
+args:
+  rgName: resource_group_name
 sockets:
-  - name: vnet
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: virtual_network_name
     kind: vnet
     required: true
 blocks: []

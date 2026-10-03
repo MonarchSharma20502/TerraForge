@@ -1,0 +1,29 @@
+apiVersion: autonation/v1
+generatorVersion: 0.1.0
+specHash: b5167a38d85fbdd6605bb60d121353b124606d9fef6a12b1db5621f445366c53
+files:
+    Deployments/prod/Core.tfvars: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    Deployments/prod/Network.tfvars: f82acff1c2374a60a5f8b93cc5a7176d348262e40782590d14a1744b1290963f
+    Modules/Network/Vnet/virtualNetwork/vnet_main.tf: 0274f576faa60664db2d463222776de5c7422f42ad0370c6e7051963f38b91d4
+    Modules/Network/Vnet/virtualNetwork/vnet_output.tf: 797e9e31690c726162d7baf8f12f69e6c0136c102a70297ceba7bdf907ac6172
+    Modules/Network/Vnet/virtualNetwork/vnet_var.tf: bdcfb89fc3b804e2b408b41f7bec8467fd0f593cbd4adbb21418a52342b7649a
+    Modules/Network/subnet/subnet_main.tf: 5cb1b100c1872097a314c620b1834baf25b5776822ccffd9ca817fa39bc48933
+    Modules/Network/subnet/subnet_output.tf: e325bf8de242396a1bf487d7a0b4102a533a11072c5468c02fdd2ce0c7615cdf
+    Modules/Network/subnet/subnet_var.tf: 49fb1122b7a0c9cff2ad0b6cdca98baaac4542f18ba98ac50e4232d0697e055f
+    Modules/resourceGroup/resource_group_main.tf: 6396ce1f0ec1fcf10fc557446513eb9f60cbabcdee53a94820210bcb955ac009
+    Modules/resourceGroup/resource_group_output.tf: 9d27ecd9ff043b13d73b4f8f3c00d0a2dcd45a0ddaa3064e2c904058b3cc9adb
+    Modules/resourceGroup/resource_group_var.tf: 2a03f614ddb7ee8e39dbe63965ad663a934185eba61d5162d3fd1c502e1acfb7
+    Workload/Core/data.tf: e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855
+    Workload/Core/locals.tf: 06be2a2677f000754fb5379014d95d2c9cb3914c4d5d73733099c487a5ac12ee
+    Workload/Core/main.tf: 338dd5fe83da6d055163d7572ef0c6f1b97d40ca6b4df9865658dcc584f13880
+    Workload/Core/provider.tf: b292cdf182df04d4ecd29da50f5931c6c6050522d09ca6875bf5a041448a8b3b
+    Workload/Core/terraform.tfvars: 4b1eeac1f62bf67f1a521afdaca7955559635be30f9e3e3e3663ad612594d854
+    Workload/Core/variables.tf: f966cdd5836b15ed84d59b47a0202605072b00df467293bdf9608dc994852e43
+    Workload/Network/data.tf: 13af3df332c60a634ef04fac18cb2dcd5e1c6a2bfed79018f178b8c25c27549d
+    Workload/Network/locals.tf: a0a42e205f7403bd342270702f2a6f5d8c0c134e7867c017f3d0138273d12c93
+    Workload/Network/main.tf: ac32f3a395ddb40276c71cbfd3eaee4b225a229d994fc2cc24b8800b7a5c199d
+    Workload/Network/provider.tf: b292cdf182df04d4ecd29da50f5931c6c6050522d09ca6875bf5a041448a8b3b
+    Workload/Network/terraform.tfvars: c12515dda642530460bef8f9c8fd40b01cd89f2f01613a2d18f353c5567aa407
+    Workload/Network/variables.tf: 4df84cfeedb4f0be44d763e55793d1174c325530cb73e4520f4774c335dbd551
+    architecture.d2: 17e11fdc0ef9e119de7c6779d4f5af581ade00f2f38ac67dcdec67dcc7b550b0
+    architecture.mmd: 50b330c8f7ca9c52cf628600f190bd3b0fc0494ba03dce41dca00180097806e2
