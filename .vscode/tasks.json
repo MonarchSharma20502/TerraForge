@@ -161,6 +161,300 @@
 			],
 			"isBackground": false,
 			"group": "build"
+		},
+		{
+			"label": "wasm-build-5",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\wasm3.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "wasm-build-6",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\wasm3.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "web-install-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webinstall.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "web-typecheck-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webtype.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "web-typecheck-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webtype.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "web-typecheck-3",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webtype.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "web-install-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webinstall2.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "web-install-3",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webinstall3.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "web-install-4",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webinstall4.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "web-install-5",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webinstall5.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "web-install-6",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webinstall6.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "web-typecheck-4",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webtype.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "web-typecheck-5",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webtype.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "web-typecheck-6",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webtype.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "web-build-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webbuild.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "wasm-build-7",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\wasm4.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "web-build-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webbuild.ps1"
+			],
+			"isBackground": false,
+			"group": "build"
+		},
+		{
+			"label": "smoke-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\smoke.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "dev-server-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\devserver.ps1"
+			],
+			"isBackground": true,
+			"group": "build"
+		},
+		{
+			"label": "verify-ui-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\verify2.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "verify-ui-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\verify2.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
 		}
 	]
 }

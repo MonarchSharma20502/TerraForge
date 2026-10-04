@@ -2,6 +2,14 @@
 # The committed golden tree lives in examples/golden.
 .work/
 
+# Web build output and dependencies. The wasm module and Go's wasm_exec.js glue
+# are generated into web/public/ by .work/wasm4.ps1.
+web/node_modules/
+web/dist/
+web/public/autonation.wasm
+web/public/wasm_exec.js
+web/tsconfig.tsbuildinfo
+
 # Terraform plugin and state artifacts from local validation runs.
 .terraform/
 *.tfstate

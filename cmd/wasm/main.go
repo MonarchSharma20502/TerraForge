@@ -4,14 +4,21 @@
 //
 // Build with
 //
-//	$GOOS=js $GOARCH=wasm go build -o web/src/core/autonation.wasm ./cmd/wasm
+//	$GOOS=js $GOARCH=wasm go build -o web/public/autonation.wasm ./cmd/wasm
+//
+// The js build constraint keeps this package out of native builds: `go vet`
+// and `go build ./...` on Windows would otherwise fail on syscall/js.
+//
+//go:build js
+
 package main
 
 import (
 	"encoding/json"
 	"syscall/js"
 
-	"github.com/autonation/autonation/catalog"
+	catalogdata "github.com/autonation/autonation/catalog"
+	"github.com/autonation/autonation/internal/catalog"
 	"github.com/autonation/autonation/internal/emit/diagram"
 	"github.com/autonation/autonation/internal/emit/hcl"
 	"github.com/autonation/autonation/internal/policy"
@@ -65,7 +72,7 @@ type CatalogEntry struct {
 }
 
 func main() {
-	cat, err := catalog.Load()
+	cat, err := catalogdata.Load()
 	if err != nil {
 		panic("autonation: load embedded catalog: " + err.Error())
 	}

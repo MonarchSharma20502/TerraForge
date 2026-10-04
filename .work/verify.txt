@@ -1,3 +1,13 @@
-﻿GO: go version go1.27.0 windows/amd64
-TF: Terraform v1.16.4 on windows_amd64  Your version of Terraform is out of date! The latest version is 1.16.5. You can update by downloading from https://developer.hashicorp.com/terraform/install
-GO_NET: https://proxy.golang.org,direct
+﻿=== go vet
+vet_exit=0
+=== go build
+build_exit=0
+=== unit tests
+TEST ./internal/resolver: PASS
+test_exit_resolver=0
+TEST ./internal/emit/hcl: PASS
+test_exit_hcl=0
+TEST ./internal/policy: PASS
+test_exit_policy=0
+=== wasm build
+wasm_exit=0
