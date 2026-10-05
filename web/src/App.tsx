@@ -88,6 +88,8 @@ export function App() {
           catalog={builder.catalog}
           selection={builder.selection}
           onSelect={builder.select}
+          onAddAt={builder.addAt}
+          onMove={builder.move}
         />
         <Inspector
           spec={builder.spec}

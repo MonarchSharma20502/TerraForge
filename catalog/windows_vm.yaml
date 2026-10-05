@@ -1,0 +1,91 @@
+kind: windows_vm
+azureType: azurerm_windows_virtual_machine
+abbr: vmw
+module: Modules/Compute/windowsVm
+stack: Compute
+category: Compute
+icon: windows-vm
+required: [name, rgName, location, size, adminUsername, adminPassword]
+optional:
+  - name: os_disk_type
+    type: string
+    default: '"Premium_LRS"'
+    description: Storage account type for the OS disk.
+    moduleOnly: true
+  - name: image_publisher
+    type: string
+    default: '"MicrosoftWindowsServer"'
+    description: Publisher of the marketplace image.
+    moduleOnly: true
+  - name: image_offer
+    type: string
+    default: '"WindowsServer"'
+    description: Offer of the marketplace image.
+    moduleOnly: true
+  - name: image_sku
+    type: string
+    default: '"2022-datacenter-azure-edition"'
+    description: SKU of the marketplace image.
+    moduleOnly: true
+  - name: image_version
+    type: string
+    default: '"latest"'
+    description: Version of the marketplace image.
+    moduleOnly: true
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Virtual machine tags merged with the stack tags.
+  - name: subnet_id
+    type: string
+    default: '""'
+    description: Subnet the VM network interface attaches to.
+    moduleOnly: true
+args:
+  rgName: resource_group_name
+  adminUsername: admin_username
+  adminPassword: admin_password
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: os_disk
+    attributes:
+      - name: caching
+        value: '"ReadWrite"'
+      - name: storage_account_type
+        value: var.os_disk_type
+  - name: source_image_reference
+    attributes:
+      - name: publisher
+        value: var.image_publisher
+      - name: offer
+        value: var.image_offer
+      - name: sku
+        value: var.image_sku
+      - name: version
+        value: var.image_version
+support:
+  - type: azurerm_network_interface
+    name: this_nic
+    count: 'var.subnet_id != "" ? 1 : 0'
+    attributes:
+      - name: name
+        value: '"${replace(var.name, "-", "")}-nic"'
+      - name: location
+        value: var.location
+      - name: resource_group_name
+        value: var.rgName
+    blocks:
+      - name: ip_configuration
+        attributes:
+          - name: name
+            value: '"ipconfig"'
+          - name: subnet_id
+            value: var.subnet_id
+          - name: private_ip_address_allocation
+            value: '"Dynamic"'
+derived:
+  - target: network_interface_ids
+    from: 'var.subnet_id != "" ? [azurerm_network_interface.this_nic[0].id] : []'

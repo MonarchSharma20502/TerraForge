@@ -19,9 +19,14 @@ export interface Metadata {
 
 // ResourceProps is the per-instance overrides. tags and stack are lifted out by
 // the parser; everything else is a kind-specific property.
+//
+// _pos is the canvas position the UI writes on drag and drop. The leading
+// underscore keeps it out of the generated Terraform: the parser only lifts
+// known keys, and the YAML emitter drops undefined values.
 export type ResourceProps = Record<string, unknown> & {
   tags?: Record<string, string>;
   stack?: string;
+  _pos?: { x: number; y: number };
 };
 
 export const ENVIRONMENTS = ["Production", "Development", "UAT", "Hub"] as const;
@@ -72,11 +77,13 @@ export function exampleSpec(): Spec {
 }
 
 // addResource inserts an instance of kind, choosing an unused id from the kind's
-// default name.
+// default name. position is optional and records where a drop landed so the node
+// appears under the cursor.
 export function addResource(
   spec: Spec,
   kind: string,
   catalog: CatalogEntry[],
+  position?: { x: number; y: number },
 ): Spec {
   const entry = catalog.find((c) => c.kind === kind);
   const base = entry?.abbr || kind;
@@ -86,11 +93,15 @@ export function addResource(
     n++;
   }
   const id = `${base}${String(n).padStart(2, "0")}`;
+  const props: ResourceProps = {};
+  if (position) {
+    props._pos = { x: Math.round(position.x), y: Math.round(position.y) };
+  }
   return {
     ...spec,
     resources: {
       ...spec.resources,
-      [kind]: { ...family, [id]: {} },
+      [kind]: { ...family, [id]: props },
     },
   };
 }
@@ -137,6 +148,10 @@ export function toYAML(spec: Spec): string {
 
 // stringify is a small YAML emitter for the spec shape. It handles the maps,
 // lists and scalars the DSL uses, and indents two spaces per level.
+//
+// Keys starting with an underscore are UI-only state (the canvas node
+// position); they are dropped here so the document the core parses carries
+// only what the generator needs.
 function stringify(value: unknown, indent: number): string {
   const pad = "  ".repeat(indent);
   if (Array.isArray(value)) {
@@ -146,7 +161,7 @@ function stringify(value: unknown, indent: number): string {
       .join("\n");
   }
   if (isPlainObject(value)) {
-    const keys = Object.keys(value);
+    const keys = Object.keys(value).filter((key) => !key.startsWith("_"));
     if (keys.length === 0) return "{}";
     return keys
       .map((key) => {

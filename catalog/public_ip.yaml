@@ -1,0 +1,28 @@
+kind: public_ip
+azureType: azurerm_public_ip
+abbr: pip
+module: Modules/Network/publicIp
+stack: Network
+category: Network
+icon: public-ip
+required: [name, rgName, location]
+optional:
+  - name: allocation_method
+    type: string
+    default: '"Static"'
+    description: Allocation method for the public IP address.
+  - name: sku
+    type: string
+    default: '"Standard"'
+    description: SKU of the public IP address.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Public IP tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

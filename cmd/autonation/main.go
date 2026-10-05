@@ -102,6 +102,11 @@ func runGenerate(specPath, outDir string) error {
 	// The policy gate runs on every generation.
 	result := policy.New(cat).Check(plan, fileMap)
 	if !result.Passed {
+		for _, f := range result.Findings {
+			if f.Severity == policy.Critical {
+				fmt.Fprintf(os.Stderr, "  %s: %s\n", f.Rule, f.Message)
+			}
+		}
 		return fmt.Errorf("policy gate failed: %d finding(s)", len(result.Findings))
 	}
 

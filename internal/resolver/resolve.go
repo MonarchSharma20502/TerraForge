@@ -81,6 +81,10 @@ func LocationAbbr(loc string) string {
 //
 // The suffix is resource-family specific (paas01, network01, 01, 02) and comes
 // from the component's position within its resource family.
+//
+// Strict-name resources keep the dashed name as the single source of truth and
+// strip the dashes at the point of use, so the resolver never shortens a name
+// silently and the policy gate still checks the canonical form.
 func (r *Resolver) ResourceName(c *ir.Component, m ir.Metadata, index int) (string, error) {
 	entry, ok := r.cat.Get(c.Kind)
 	if !ok {
@@ -107,26 +111,37 @@ func suffixFor(kind string, index int) string {
 }
 
 // strictName applies the Azure name constraints for a kind.
+//
+// The canonical dashed name is kept as the single source of truth: it is what
+// the policy gate checks, what the diagrams label, and what the deployment
+// tfvars carry. Only the length and charset are validated here, because those
+// are properties the naming algorithm cannot know. The dashes themselves are
+// stripped at the point of use, in the module, where the resource is created.
 func (r *Resolver) strictName(kind, name string) (string, error) {
 	entry, ok := r.cat.Get(kind)
-	if ok && entry.StrictName != nil {
-		s := name
-		if entry.StrictName.Lowercase {
-			s = strings.ToLower(s)
-		}
-		if entry.StrictName.AlnumOnly {
-			s = strings.Map(func(r rune) rune {
-				if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
-					return r
-				}
-				return -1
-			}, s)
-		}
-		if len(s) < entry.StrictName.Min || len(s) > entry.StrictName.Max {
+	if !ok || entry.StrictName == nil {
+		return name, nil
+	}
+	s := name
+	if entry.StrictName.Lowercase {
+		s = strings.ToLower(s)
+	}
+	if entry.StrictName.AlnumOnly {
+		stripped := strings.Map(func(r rune) rune {
+			if (r >= 'a' && r <= 'z') || (r >= '0' && r <= '9') {
+				return r
+			}
+			return -1
+		}, s)
+		if len(stripped) < entry.StrictName.Min || len(stripped) > entry.StrictName.Max {
 			return "", fmt.Errorf("resolver: %s name %q length %d outside %d-%d",
-				kind, s, len(s), entry.StrictName.Min, entry.StrictName.Max)
+				kind, name, len(stripped), entry.StrictName.Min, entry.StrictName.Max)
 		}
-		return s, nil
+		return name, nil
+	}
+	if len(s) < entry.StrictName.Min || len(s) > entry.StrictName.Max {
+		return "", fmt.Errorf("resolver: %s name %q length %d outside %d-%d",
+			kind, name, len(s), entry.StrictName.Min, entry.StrictName.Max)
 	}
 	return name, nil
 }

@@ -1,0 +1,43 @@
+kind: key_vault
+azureType: azurerm_key_vault
+abbr: kv
+module: Modules/Security/keyVault
+stack: Core
+category: Security
+icon: key-vault
+required: [name, rgName, location]
+optional:
+  - name: sku_name
+    type: string
+    default: '"standard"'
+    description: SKU of the key vault.
+  - name: purge_protection_enabled
+    type: bool
+    default: "false"
+    description: Whether purge protection is enabled on the key vault.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Key vault tags merged with the stack tags.
+# tenant_id and rbac_authorization_enabled are required by azurerm 4.x but are
+# deployment-environment values, not architecture inputs. The module derives
+# them from the current subscription data source so the caller never has to pass
+# them and no tenant id is ever written to a file.
+derived:
+  - target: tenant_id
+    from: data.azurerm_subscription.current.tenant_id
+  - target: rbac_authorization_enabled
+    from: "true"
+strictName:
+  min: 3
+  max: 24
+  lowercase: true
+  alnumOnly: true
+  stripDashes: true
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

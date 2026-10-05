@@ -1,0 +1,20 @@
+kind: private_dns_zone
+azureType: azurerm_private_dns_zone
+abbr: pdz
+module: Modules/Network/privateDnsZone
+stack: Network
+category: Network
+icon: private-dns-zone
+required: [name, rgName]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Private DNS zone tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

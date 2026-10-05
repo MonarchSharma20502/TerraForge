@@ -49,6 +49,39 @@ type Entry struct {
 
 	// Blocks are the nested blocks emitted as dynamic blocks.
 	Blocks []Block `yaml:"blocks,omitempty"`
+
+	// Derived are the resource attributes the module computes itself instead of
+	// taking from the caller: values that belong to the deployment environment
+	// rather than to the architecture, and must never be written to a file.
+	Derived []Derived `yaml:"derived,omitempty"`
+
+	// Support are the supporting resources a module creates alongside its main
+	// resource, expressed as static nested blocks so the module stays a single
+	// reusable blueprint with no hardcoded names.
+	Support []StaticBlock `yaml:"support,omitempty"`
+}
+
+// Derived is one module-computed resource attribute.
+type Derived struct {
+	// Target is the resource attribute name, e.g. "tenant_id".
+	Target string `yaml:"target"`
+	// From is the HCL expression the attribute is set to.
+	From string `yaml:"from"`
+}
+
+// StaticBlock is a resource block a module emits verbatim.
+type StaticBlock struct {
+	// Type is the resource type, e.g. azurerm_network_interface.
+	Type string `yaml:"type"`
+	// Name is the resource local name, e.g. "this_nic".
+	Name string `yaml:"name"`
+	// Count is the optional count expression. A conditional resource uses
+	// `count = var.createX ? 1 : 0` and callers index it with [0].
+	Count string `yaml:"count,omitempty"`
+	// Attributes are the block attributes, in declaration order.
+	Attributes []BlockAttr `yaml:"attributes"`
+	// Blocks are the nested blocks, emitted literally.
+	Blocks []Block `yaml:"blocks,omitempty"`
 }
 
 // StrictName holds Azure resource name constraints.
@@ -74,6 +107,12 @@ type Var struct {
 	Default string `yaml:"default"`
 	// Description becomes the variable description.
 	Description string `yaml:"description"`
+
+	// ModuleOnly marks a variable that feeds a nested block or a supporting
+	// resource rather than the main resource. It is declared as a module
+	// variable but never emitted as a top-level resource attribute, so a
+	// value that is not a real argument of the resource cannot fail validate.
+	ModuleOnly bool `yaml:"moduleOnly,omitempty"`
 }
 
 // Socket is a typed attachment point exposed or consumed by a kind.
@@ -86,12 +125,28 @@ type Socket struct {
 	Required bool `yaml:"required"`
 }
 
-// Block is a nested block emitted with dynamic.
+// Block is a nested block.
+//
+// When ForEach is set the block is emitted as a dynamic block over that
+// expression. When ForEach is empty the block is emitted literally with the
+// attributes in Attributes, in declaration order.
 type Block struct {
-	// Name is the block type, e.g. "network_rules".
+	// Name is the block type, e.g. "os_disk", "network_rules".
 	Name string `yaml:"name"`
-	// ForEach is the for_each expression over the variable.
-	ForEach string `yaml:"forEach"`
+	// ForEach is the for_each expression of a dynamic block.
+	ForEach string `yaml:"forEach,omitempty"`
+	// Attributes are the literal attributes of a static block, in order.
+	Attributes []BlockAttr `yaml:"attributes,omitempty"`
+	// Blocks are the nested blocks within this block, emitted literally.
+	Blocks []Block `yaml:"blocks,omitempty"`
+}
+
+// BlockAttr is one attribute of a static nested block.
+type BlockAttr struct {
+	// Name is the attribute name, e.g. "storage_account_type".
+	Name string `yaml:"name"`
+	// Value is the HCL expression the attribute is set to.
+	Value string `yaml:"value"`
 }
 
 // Catalog is the whole kind catalog keyed by Kind.

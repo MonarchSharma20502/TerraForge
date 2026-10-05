@@ -21,8 +21,15 @@ export function Palette({ catalog, onAdd }: PaletteProps) {
             <button
               key={entry.kind}
               className="palette-item"
+              draggable
+              onDragStart={(event) =>
+                event.dataTransfer.setData(
+                  "application/x-autonation-kind",
+                  entry.kind,
+                )
+              }
               onClick={() => onAdd(entry.kind)}
-              title={`Add ${entry.azureType} to the ${entry.stack} stack`}
+              title={`Drag to the canvas, or click to add ${entry.azureType} to the ${entry.stack} stack`}
             >
               <span className="palette-icon">{entry.icon}</span>
               <span className="palette-kind">{entry.kind}</span>

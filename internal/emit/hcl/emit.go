@@ -111,22 +111,94 @@ func (e *Emitter) kindsInUse(plan *resolver.Plan) []string {
 }
 
 // moduleMain emits the resource block for a kind.
-// moduleMain emits the resource block for a kind.
 //
 // References are written as raw HCL expressions: a quoted "var.name" would be
 // a string literal, not a reference, and would fail terraform validate.
 // Module variables are renamed to their resource attribute via entry.Args.
+//
+// Strict-name resources get a separate name_configs entry with
+// replace(..., "-", ""): Azure rejects dashes for these kinds, so the dashed
+// name the resolver computed is stripped at the point of use and the original
+// name stays the single source of truth everywhere else.
+//
+// Derived attributes are set to a module-internal expression. When one of them
+// reads the current subscription, the module also emits the data source it
+// needs, so the caller never supplies a tenant id and none is written to a file.
 func (e *Emitter) moduleMain(entry *catalog.Entry) (string, error) {
 	return format(func(body *hclwrite.Body) {
+		if needsSubscription(entry) {
+			d := body.AppendNewBlock("data", []string{"azurerm_subscription", "current"}).Body()
+			d.SetAttributeRaw("subscription_id", gohclTokens("var.subscription_id"))
+		}
 		r := body.AppendNewBlock("resource", []string{entry.AzureType, "this"})
 		rb := r.Body()
+		rb.SetAttributeRaw("name", gohclTokens(e.strictNameExpr(entry)))
 		for _, v := range entry.Required {
+			if v == "name" {
+				continue
+			}
 			rb.SetAttributeRaw(e.attrName(entry, v), gohclTokens("var."+v))
 		}
 		for _, v := range entry.Optional {
+			if v.ModuleOnly {
+				continue
+			}
 			rb.SetAttributeRaw(e.attrName(entry, v.Name), gohclTokens("var."+v.Name))
 		}
+		for _, d := range entry.Derived {
+			rb.SetAttributeRaw(d.Target, gohclTokens(d.From))
+		}
+		for _, b := range entry.Blocks {
+			if b.ForEach != "" {
+				db := rb.AppendNewBlock("dynamic", []string{b.Name})
+				db.Body().SetAttributeRaw("for_each", gohclTokens(b.ForEach))
+				cb := db.Body().AppendNewBlock("content", nil).Body()
+				cb.SetAttributeRaw("name", gohclTokens("each.key"))
+				cb.SetAttributeRaw("value", gohclTokens("each.value"))
+				continue
+			}
+			nb := rb.AppendNewBlock(b.Name, nil).Body()
+			emitBlock(nb, b.Attributes, b.Blocks)
+		}
+		for _, s := range entry.Support {
+			sb := body.AppendNewBlock("resource", []string{s.Type, s.Name}).Body()
+			if s.Count != "" {
+				sb.SetAttributeRaw("count", gohclTokens(s.Count))
+			}
+			emitBlock(sb, s.Attributes, s.Blocks)
+		}
 	}), nil
+}
+
+// emitBlock writes the attributes and nested static blocks of one block body.
+func emitBlock(body *hclwrite.Body, attrs []catalog.BlockAttr, blocks []catalog.Block) {
+	for _, a := range attrs {
+		body.SetAttributeRaw(a.Name, gohclTokens(a.Value))
+	}
+	for _, b := range blocks {
+		nb := body.AppendNewBlock(b.Name, nil).Body()
+		emitBlock(nb, b.Attributes, b.Blocks)
+	}
+}
+
+// needsSubscription reports whether a kind derives anything from the current
+// subscription data source.
+func needsSubscription(entry *catalog.Entry) bool {
+	for _, d := range entry.Derived {
+		if strings.HasPrefix(d.From, "data.azurerm_subscription") {
+			return true
+		}
+	}
+	return false
+}
+
+// strictNameExpr returns the HCL expression a module uses for the resource
+// name when the kind rejects dashes.
+func (e *Emitter) strictNameExpr(entry *catalog.Entry) string {
+	if entry.StrictName != nil && entry.StrictName.StripDashes {
+		return "replace(var.name, \"-\", \"\")"
+	}
+	return "var.name"
 }
 
 // attrName returns the resource attribute a module variable maps to.
@@ -144,6 +216,11 @@ func (e *Emitter) attrName(entry *catalog.Entry, v string) string {
 // rather than an empty list.
 func (e *Emitter) moduleVars(entry *catalog.Entry) (string, error) {
 	return format(func(body *hclwrite.Body) {
+		if needsSubscription(entry) {
+			v := body.AppendNewBlock("variable", []string{"subscription_id"}).Body()
+			v.SetAttributeRaw("type", gohclTokens("string"))
+			v.SetAttributeValue("description", cty.StringVal("Azure subscription id"))
+		}
 		for _, name := range entry.Required {
 			v := body.AppendNewBlock("variable", []string{name}).Body()
 			v.SetAttributeRaw("type", gohclTokens("string"))
@@ -216,6 +293,9 @@ func (e *Emitter) stackMain(plan *resolver.Plan, stack string, res []*resolver.R
 			}
 			for _, v := range entry.Optional {
 				mb.SetAttributeRaw(v.Name, gohclTokens("var."+v.Name))
+			}
+			if needsSubscription(entry) {
+				mb.SetAttributeRaw("subscription_id", gohclTokens("var.subscription_id"))
 			}
 		}
 	})

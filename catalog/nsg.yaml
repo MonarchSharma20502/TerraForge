@@ -1,0 +1,20 @@
+kind: nsg
+azureType: azurerm_network_security_group
+abbr: nsg
+module: Modules/Network/nsg
+stack: Network
+category: Security
+icon: nsg
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Network security group tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

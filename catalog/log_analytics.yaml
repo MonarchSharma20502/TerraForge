@@ -1,0 +1,28 @@
+kind: log_analytics
+azureType: azurerm_log_analytics_workspace
+abbr: log
+module: Modules/Monitoring/logAnalytics
+stack: Core
+category: Monitoring
+icon: log-analytics
+required: [name, rgName, location]
+optional:
+  - name: sku
+    type: string
+    default: '"PerGB2018"'
+    description: SKU of the Log Analytics workspace.
+  - name: retention_in_days
+    type: number
+    default: "30"
+    description: Data retention in days for the workspace.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Workspace tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

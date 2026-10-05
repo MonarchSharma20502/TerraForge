@@ -1,0 +1,38 @@
+kind: storage_account
+azureType: azurerm_storage_account
+abbr: st
+module: Modules/Data/storageAccount
+stack: Core
+category: Data
+icon: storage-account
+required: [name, rgName, location]
+optional:
+  - name: account_tier
+    type: string
+    default: '"Standard"'
+    description: Tier of the storage account.
+  - name: account_replication_type
+    type: string
+    default: '"LRS"'
+    description: Replication strategy for the storage account.
+  - name: min_tls_version
+    type: string
+    default: '"TLS1_2"'
+    description: Minimum TLS version required by the storage account.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Storage account tags merged with the stack tags.
+strictName:
+  min: 3
+  max: 24
+  lowercase: true
+  alnumOnly: true
+  stripDashes: true
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

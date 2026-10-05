@@ -455,6 +455,216 @@
 			],
 			"isBackground": false,
 			"group": "test"
+		},
+		{
+			"label": "find-doc-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\finddoc.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "cat-probe-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\catprobe.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "cat-probe-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\catprobe.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "cat-probe-3",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\catprobe.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "verify-ui-3",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\verify2.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "full-probe-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\fullprobe.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "tfcheck-full-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\tfcheck2.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "tfcheck-full-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\tfcheck2.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "policy-probe-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\policyprobe.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "policy-probe-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\policyprobe.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "policy-probe-3",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\policyprobe.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "tfcheck-compute-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\tfcheck3.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "regress-all-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\regress2.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "extract-rules-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\rules.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
+		},
+		{
+			"label": "web-typecheck-7",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webtype2.ps1"
+			],
+			"isBackground": false,
+			"group": "test"
 		}
 	]
 }

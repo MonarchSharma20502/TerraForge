@@ -3,6 +3,7 @@
 package policy
 
 import (
+	"fmt"
 	"regexp"
 	"strings"
 
@@ -126,9 +127,30 @@ func (e *Engine) namingConformance(plan *resolver.Plan) []Finding {
 		if !ok || entry.StrictName == nil {
 			continue
 		}
+		// A strict-name resource is deployed as the dashes-stripped form, so that
+		// is the string Azure sees and the one the charset rule must judge.
 		s := res.Name
+		if entry.StrictName.AlnumOnly {
+			s = strings.ReplaceAll(s, "-", "")
+		}
 		if entry.StrictName.AlnumOnly && strings.ContainsAny(s, "-") {
 			out = append(out, FoundStrict(res, entry))
+		}
+		if entry.StrictName.Min > 0 && len(s) < entry.StrictName.Min {
+			out = append(out, Finding{
+				Rule:     "naming-conformance",
+				Severity: Critical,
+				Message: fmt.Sprintf("name %s is %d characters, below the %d minimum for %s",
+					s, len(s), entry.StrictName.Min, res.Component.Kind),
+			})
+		}
+		if entry.StrictName.Max > 0 && len(s) > entry.StrictName.Max {
+			out = append(out, Finding{
+				Rule:     "naming-conformance",
+				Severity: Critical,
+				Message: fmt.Sprintf("name %s is %d characters, above the %d maximum for %s",
+					s, len(s), entry.StrictName.Max, res.Component.Kind),
+			})
 		}
 	}
 	return out

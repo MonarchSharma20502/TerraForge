@@ -33,6 +33,8 @@ export interface BuilderState {
 export function useBuilder(): BuilderState & {
   setMetadata: (key: keyof Spec["metadata"], value: string) => void;
   add: (kind: string) => void;
+  addAt: (kind: string, position: { x: number; y: number }) => void;
+  move: (kind: string, id: string, position: { x: number; y: number }) => void;
   remove: (kind: string, id: string) => void;
   select: (kind: string, id: string) => void;
   setProp: (key: string, value: unknown) => void;
@@ -91,6 +93,29 @@ export function useBuilder(): BuilderState & {
     setState((s) => ({ ...s, spec: addResource(s.spec, kind, s.catalog) }));
   }, []);
 
+  // addAt is the drag-and-drop entry point: the canvas reports where the drop
+  // landed so the node appears under the cursor instead of jumping to the next
+  // grid slot.
+  const addAt = useCallback(
+    (kind: string, position: { x: number; y: number }) => {
+      setState((s) => ({
+        ...s,
+        spec: addResource(s.spec, kind, s.catalog, position),
+      }));
+    },
+    [],
+  );
+
+  // move persists a node drag so the layout survives regeneration. Positions are
+  // stored on the instance, not in a separate layout map, so the spec stays the
+  // single source of truth.
+  const move = useCallback(
+    (kind: string, id: string, position: { x: number; y: number }) => {
+      setState((s) => ({ ...s, spec: setProperty(s.spec, kind, id, "_pos", position) }));
+    },
+    [],
+  );
+
   const remove = useCallback((kind: string, id: string) => {
     setState((s) => {
       const spec = removeResource(s.spec, kind, id);
@@ -123,6 +148,8 @@ export function useBuilder(): BuilderState & {
     ...state,
     setMetadata,
     add,
+    addAt,
+    move,
     remove,
     select,
     setProp,

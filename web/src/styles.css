@@ -1,14 +1,17 @@
 :root {
-  --bg: #0f1115;
-  --pane: #161a21;
-  --pane-border: #262c38;
-  --text: #d7dde8;
+  --bg: #0d1016;
+  --pane: #141922;
+  --pane-2: #1a212c;
+  --pane-border: #252e3d;
+  --text: #d8dee9;
   --text-dim: #8b95a7;
   --accent: #4f8cff;
-  --accent-dim: #2c4a86;
+  --accent-dim: rgba(79, 140, 255, 0.18);
   --ok: #3fb970;
   --bad: #e5534b;
   --warn: #d98c3e;
+  --radius: 8px;
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
   font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
 }
 
@@ -20,6 +23,19 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--text);
+}
+
+button {
+  font-family: inherit;
+  transition: border-color 0.18s var(--ease), background 0.18s var(--ease),
+    color 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+
+input,
+select,
+textarea {
+  font-family: inherit;
+  transition: border-color 0.18s var(--ease), box-shadow 0.18s var(--ease);
 }
 
 .app {
@@ -64,11 +80,18 @@ body {
 .bar-field select {
   background: var(--bg);
   border: 1px solid var(--pane-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   color: var(--text);
   padding: 6px 8px;
   font-size: 13px;
   min-width: 120px;
+}
+
+.bar-field input:focus,
+.bar-field select:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
 .bar-actions {
@@ -79,7 +102,7 @@ body {
 .bar-actions button {
   background: var(--bg);
   border: 1px solid var(--pane-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   color: var(--text);
   padding: 7px 12px;
   cursor: pointer;
@@ -87,6 +110,7 @@ body {
 
 .bar-actions button:hover {
   border-color: var(--accent);
+  color: #fff;
 }
 
 /* The four-pane grid */
@@ -113,6 +137,7 @@ body {
   display: flex;
   align-items: center;
   justify-content: space-between;
+  gap: 8px;
   margin: 0 0 12px;
   font-size: 13px;
   letter-spacing: 0.06em;
@@ -141,13 +166,23 @@ body {
   width: 100%;
   background: var(--bg);
   border: 1px solid var(--pane-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   color: var(--text);
   padding: 7px 8px;
   margin-bottom: 4px;
-  cursor: pointer;
+  cursor: grab;
   text-align: left;
   font-size: 13px;
+}
+
+.palette-item:hover {
+  border-color: var(--accent);
+  background: var(--pane-2);
+  transform: translateX(2px);
+}
+
+.palette-item:active {
+  cursor: grabbing;
 }
 
 .palette-item:hover {
@@ -175,32 +210,90 @@ body {
   flex-direction: column;
 }
 
+.canvas-expand {
+  background: var(--bg);
+  border: 1px solid var(--pane-border);
+  border-radius: 6px;
+  color: var(--text-dim);
+  padding: 4px 10px;
+  cursor: pointer;
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  text-transform: none;
+}
+
+.canvas-expand:hover {
+  border-color: var(--accent);
+  color: #fff;
+}
+
 .canvas-flow {
   flex: 1;
   min-height: 0;
   border: 1px solid var(--pane-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   background: var(--bg);
 }
 
+.canvas-expanded .canvas-flow {
+  opacity: 0.35;
+  filter: saturate(0.6);
+  pointer-events: none;
+}
+
+/* The overlay is the expand target: it covers the whole viewport so an
+   architecture is legible at any size, and it animates in from the pane. */
+.canvas-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  background: rgba(13, 16, 22, 0.97);
+  backdrop-filter: blur(6px);
+  border-radius: 0;
+  animation: canvas-overlay-in 0.22s var(--ease);
+}
+
+@keyframes canvas-overlay-in {
+  from {
+    opacity: 0;
+    transform: scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+/* Node type sizes follow the template's font ladder: subscription 11pt,
+ * resource group 10pt, virtual network 9pt, subnet 8pt, resource name 7pt.
+ * Segoe UI Light is the template's font, with Segoe UI as the web-safe fall
+ * back since Segoe UI Light is not present on non-Windows machines. */
 .canvas-node {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 2px;
+  font-family: "Segoe UI Light", "Segoe UI", system-ui, sans-serif;
   font-size: 12px;
 }
 
 .canvas-node-icon {
   font-size: 16px;
+  /* The template requires every SVG icon to keep a 1:1 ratio. */
+  width: 16px;
+  height: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .canvas-node-id {
   font-weight: 600;
+  font-size: 7pt;
 }
 
 .canvas-node-kind {
-  font-size: 10px;
+  font-size: 8pt;
   color: var(--text-dim);
   font-family: ui-monospace, Consolas, monospace;
 }
@@ -208,6 +301,80 @@ body {
 .canvas-node-selected {
   border-color: var(--accent) !important;
   box-shadow: 0 0 0 2px var(--accent-dim);
+}
+
+/* Stack boundaries: the NOC template draws every architecture boundary at a
+ * consistent weight with its label top-left, and gives each tier its own colour
+ * so a reader can tell subscription, network and workload apart at a glance. */
+.canvas-stack-wrap {
+  border: 1.5pt solid var(--tier-color, #4472c4);
+  border-radius: 10px;
+  background: color-mix(in srgb, var(--tier-color, #4472c4) 6%, transparent);
+  padding: 30px 12px 12px;
+}
+
+.canvas-stack {
+  position: absolute;
+  top: 6px;
+  left: 10px;
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--tier-color, #4472c4);
+}
+
+.canvas-stack-name {
+  font-size: 11px;
+}
+
+/* Per-tier colours from the template: the subscription and resource-group
+ * boundary is #4472C4, the virtual-network tier is #5B9BD5, the PaaS/data tier
+ * is #949494 and the compute tier is #A9D18E. */
+.tier-core {
+  --tier-color: #4472c4;
+}
+
+.tier-network {
+  --tier-color: #5b9bd5;
+}
+
+.tier-data {
+  --tier-color: #949494;
+}
+
+.tier-compute {
+  --tier-color: #a9d18e;
+}
+
+/* Connector styles from the template legend: peering and VNet integration are
+ * cyan (#2BCBED), a web request is green (#00B050), an on-prem tunnel is black
+ * and a VNet link is blue (#5B9BD5). The template sets legend width to 1pt. */
+.edge-peering .react-flow__edge-path {
+  stroke: #2bcbed;
+  stroke-width: 1pt;
+  stroke-dasharray: 6 4;
+}
+
+.edge-web-request .react-flow__edge-path {
+  stroke: #00b050;
+  stroke-width: 1pt;
+}
+
+.edge-onprem .react-flow__edge-path {
+  stroke: #000000;
+  stroke-width: 1pt;
+}
+
+.edge-vnet-link .react-flow__edge-path {
+  stroke: #5b9bd5;
+  stroke-width: 1pt;
+}
+
+.edge-default .react-flow__edge-path {
+  stroke: var(--text-dim);
+  stroke-width: 1pt;
+  stroke-dasharray: 3 3;
 }
 
 /* Inspector */
@@ -245,11 +412,16 @@ body {
   margin-left: auto;
   background: var(--bg);
   border: 1px solid var(--pane-border);
-  border-radius: 4px;
+  border-radius: 6px;
   color: var(--bad);
   padding: 5px 10px;
   cursor: pointer;
   font-size: 12px;
+}
+
+.inspector-remove:hover {
+  border-color: var(--bad);
+  background: rgba(229, 83, 75, 0.1);
 }
 
 .inspector-section {
@@ -284,11 +456,17 @@ body {
 .property-input {
   background: var(--bg);
   border: 1px solid var(--pane-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   color: var(--text);
   padding: 6px 8px;
   font-size: 13px;
   font-family: inherit;
+}
+
+.property-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-dim);
 }
 
 .property-input-map {
@@ -352,7 +530,7 @@ body {
   margin: 0;
   background: var(--bg);
   border: 1px solid var(--pane-border);
-  border-radius: 4px;
+  border-radius: var(--radius);
   padding: 10px;
   overflow: auto;
   font-size: 12px;
