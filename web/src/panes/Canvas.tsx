@@ -2,9 +2,10 @@
 // grouped by their Workload stack; edges are the dependency relationships the
 // resolver computed.
 //
-// The pane expands to a full-viewport overlay on demand: an architecture does
-// not fit in a 300px column. Palette items and the canvas itself both accept
-// drops, so a kind dragged from the palette lands under the cursor.
+// The canvas is the dominant surface: it takes all the width the metadata bar
+// leaves it, and expands to the full viewport on demand so an architecture of
+// any size can be read and edited. Palette items and the canvas itself both
+// accept drops, so a kind dragged from the palette lands under the cursor.
 
 import { useCallback, useEffect, useMemo, useState } from "react";
 import {
@@ -31,6 +32,7 @@ interface CanvasProps {
   onSelect: (kind: string, id: string) => void;
   onAddAt: (kind: string, position: { x: number; y: number }) => void;
   onMove: (kind: string, id: string, position: { x: number; y: number }) => void;
+  onRemove: (kind: string, id: string) => void;
 }
 
 export function Canvas({
@@ -40,6 +42,7 @@ export function Canvas({
   onSelect,
   onAddAt,
   onMove,
+  onRemove,
 }: CanvasProps) {
   const [expanded, setExpanded] = useState(false);
   const { nodes, edges } = useMemo(
@@ -102,40 +105,71 @@ export function Canvas({
     [setFlowEdges],
   );
 
-  const flow = (
-    <ReactFlow
-      nodes={flowNodes}
-      edges={flowEdges}
-      onNodesChange={onNodesChange}
-      onEdgesChange={onEdgesChange}
-      onNodeClick={handleNodeClick}
-      onNodeDragStop={handleNodeDragStop}
-      onConnect={handleConnect}
-      onDrop={handleDrop}
-      onDragOver={handleDragOver}
-      fitView
-      nodesDraggable
-      proOptions={{ hideAttribution: true }}
-    >
-      <Background />
-      <Controls showInteractive={false} />
-    </ReactFlow>
-  );
+  // Escape leaves full screen; Delete removes the selection. Both keep the
+  // canvas usable without a trip to the mouse.
+  useEffect(() => {
+    if (!expanded) return;
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key === "Escape") setExpanded(false);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [expanded]);
+
+  useEffect(() => {
+    const handleKey = (event: KeyboardEvent) => {
+      if (event.key !== "Delete" && event.key !== "Backspace") return;
+      if (!selection) return;
+      const target = event.target as HTMLElement | null;
+      // Do not steal a delete meant for a text field.
+      if (
+        target &&
+        (target.tagName === "INPUT" ||
+          target.tagName === "TEXTAREA" ||
+          target.isContentEditable)
+      ) {
+        return;
+      }
+      onRemove(selection.kind, selection.id);
+    };
+    window.addEventListener("keydown", handleKey);
+    return () => window.removeEventListener("keydown", handleKey);
+  }, [selection, onRemove]);
 
   return (
     <div className={`pane canvas${expanded ? " canvas-expanded" : ""}`}>
       <h2 className="pane-title">
         Architecture
+        <span className="canvas-hint">Drag a resource from the palette</span>
         <button
           className="canvas-expand"
           onClick={() => setExpanded((value) => !value)}
-          title={expanded ? "Collapse the architecture" : "Expand the architecture"}
+          title={
+            expanded ? "Collapse the architecture (Escape)" : "Expand the architecture"
+          }
         >
           {expanded ? "Exit full screen" : "Expand"}
         </button>
       </h2>
-      <div className="canvas-flow">{flow}</div>
-      {expanded && <div className="canvas-overlay">{flow}</div>}
+      <div className="canvas-flow">
+        <ReactFlow
+          nodes={flowNodes}
+          edges={flowEdges}
+          onNodesChange={onNodesChange}
+          onEdgesChange={onEdgesChange}
+          onNodeClick={handleNodeClick}
+          onNodeDragStop={handleNodeDragStop}
+          onConnect={handleConnect}
+          onDrop={handleDrop}
+          onDragOver={handleDragOver}
+          fitView
+          nodesDraggable
+          proOptions={{ hideAttribution: true }}
+        >
+          <Background gap={20} size={1.4} color="#1d2534" />
+          <Controls showInteractive={false} />
+        </ReactFlow>
+      </div>
     </div>
-    );
+  );
 }

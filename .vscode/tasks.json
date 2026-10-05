@@ -665,6 +665,19 @@
 			],
 			"isBackground": false,
 			"group": "test"
+		},
+		{
+			"label": "web-typecheck-8",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\webtype3.ps1"
+			],
+			"group": "test"
 		}
 	]
 }

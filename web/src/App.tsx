@@ -1,6 +1,8 @@
 // The builder shell: metadata bar, palette, canvas, inspector, preview and the
 // policy findings panel. Every pane is a pure function of the spec.
 
+import { useState } from "react";
+
 import { Canvas } from "./panes/Canvas";
 import { Findings } from "./panes/Findings";
 import { Inspector } from "./panes/Inspector";
@@ -11,6 +13,9 @@ import { ENVIRONMENTS, LOCATIONS, type Spec } from "./spec/model";
 
 export function App() {
   const builder = useBuilder();
+  // The code view is on demand. The default surface is the canvas, so the
+  // generated Terraform is not shown until the user asks for it.
+  const [previewOpen, setPreviewOpen] = useState(false);
 
   return (
     <div className="app">
@@ -78,6 +83,13 @@ export function App() {
         <div className="bar-actions">
           <button onClick={builder.loadExample}>Load example</button>
           <button onClick={builder.clear}>Clear</button>
+          <button
+            className={previewOpen ? "bar-action-active" : ""}
+            onClick={() => setPreviewOpen((value) => !value)}
+            title="Show the generated Terraform"
+          >
+            Terraform
+          </button>
         </div>
       </header>
 
@@ -90,6 +102,7 @@ export function App() {
           onSelect={builder.select}
           onAddAt={builder.addAt}
           onMove={builder.move}
+          onRemove={builder.remove}
         />
         <Inspector
           spec={builder.spec}
@@ -98,12 +111,15 @@ export function App() {
           onSetProperty={builder.setProp}
           onRemove={builder.remove}
         />
-        <Preview
-          result={builder.result}
-          loading={builder.loading}
-          coreError={builder.coreError}
-        />
       </main>
+
+      <Preview
+        result={builder.result}
+        loading={builder.loading}
+        coreError={builder.coreError}
+        open={previewOpen}
+        onClose={() => setPreviewOpen(false)}
+      />
 
       <footer className="gate">
         <Findings result={builder.result} />
