@@ -678,6 +678,19 @@
 				"D:\\Auto-nation\\.work\\webtype3.ps1"
 			],
 			"group": "test"
+		},
+		{
+			"label": "regress-all-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\regress3.ps1"
+			],
+			"group": "test"
 		}
 	]
 }

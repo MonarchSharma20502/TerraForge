@@ -46,34 +46,42 @@ textarea {
 
 /* Metadata bar */
 
+/* Metadata bar: a compact two-row grid so the fields never wrap into a tall
+ * block that eats the canvas. */
 .bar {
-  display: flex;
-  align-items: flex-end;
-  gap: 24px;
-  padding: 12px 16px;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: end;
+  gap: 4px 16px;
+  padding: 8px 16px;
   background: var(--pane);
   border-bottom: 1px solid var(--pane-border);
 }
 
 .bar-title {
   margin: 0;
-  font-size: 18px;
+  font-size: 17px;
   letter-spacing: 0.04em;
+  white-space: nowrap;
 }
 
 .bar-fields {
   display: flex;
-  gap: 12px;
+  gap: 10px;
   flex-wrap: wrap;
-  flex: 1;
+  min-width: 0;
+  align-items: end;
 }
 
 .bar-field {
   display: flex;
   flex-direction: column;
-  gap: 4px;
-  font-size: 12px;
+  gap: 3px;
+  font-size: 11px;
   color: var(--text-dim);
+  flex: 1;
+  min-width: 0;
+  max-width: 118px;
 }
 
 .bar-field input,
@@ -82,9 +90,10 @@ textarea {
   border: 1px solid var(--pane-border);
   border-radius: var(--radius);
   color: var(--text);
-  padding: 6px 8px;
-  font-size: 13px;
-  min-width: 120px;
+  padding: 5px 6px;
+  font-size: 12px;
+  min-width: 0;
+  width: 100%;
 }
 
 .bar-field input:focus,
@@ -96,7 +105,7 @@ textarea {
 
 .bar-actions {
   display: flex;
-  gap: 8px;
+  gap: 6px;
 }
 
 .bar-actions button {
@@ -104,8 +113,10 @@ textarea {
   border: 1px solid var(--pane-border);
   border-radius: var(--radius);
   color: var(--text);
-  padding: 7px 12px;
+  padding: 6px 10px;
   cursor: pointer;
+  font-size: 12px;
+  white-space: nowrap;
 }
 
 .bar-actions button:hover {
@@ -120,10 +131,11 @@ textarea {
 }
 
 /* The three-pane grid: the canvas is the working surface and takes the
- * remaining width. The generated code lives in a drawer, not a column. */
+ * remaining width. The generated code lives in a drawer, not a column.
+ * minmax(0, 1fr) lets the canvas column shrink instead of overflowing. */
 .grid {
   display: grid;
-  grid-template-columns: 240px 1fr 300px;
+  grid-template-columns: 220px minmax(0, 1fr) 280px;
   flex: 1;
   min-height: 0;
 }
@@ -698,9 +710,10 @@ textarea {
 .gate {
   background: var(--pane);
   border-top: 1px solid var(--pane-border);
-  padding: 10px 16px;
-  max-height: 160px;
+  padding: 8px 16px;
+  max-height: 96px;
   overflow: auto;
+  flex-shrink: 0;
 }
 
 .findings {
