@@ -691,6 +691,71 @@
 				"D:\\Auto-nation\\.work\\regress3.ps1"
 			],
 			"group": "test"
+		},
+		{
+			"label": "list-icons-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\listicons.ps1"
+			],
+			"group": "test"
+		},
+		{
+			"label": "icon-match-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\iconmatch.ps1"
+			],
+			"group": "test"
+		},
+		{
+			"label": "icon-match-2",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\iconmatch2.ps1"
+			],
+			"group": "test"
+		},
+		{
+			"label": "extract-icons-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\extracticons.ps1"
+			],
+			"group": "build"
+		},
+		{
+			"label": "clean-icons-1",
+			"type": "shell",
+			"command": "powershell",
+			"args": [
+				"-NoProfile",
+				"-ExecutionPolicy",
+				"Bypass",
+				"-File",
+				"D:\\Auto-nation\\.work\\cleanicons.ps1"
+			],
+			"group": "build"
 		}
 	]
 }

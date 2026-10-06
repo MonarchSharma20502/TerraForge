@@ -269,6 +269,16 @@ textarea {
 
 .palette-icon {
   font-size: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.palette-icon svg {
+  width: 16px;
+  height: 16px;
+  display: block;
 }
 
 .palette-kind {
@@ -366,11 +376,17 @@ textarea {
 .canvas-node-icon {
   font-size: 16px;
   /* The template requires every SVG icon to keep a 1:1 ratio. */
-  width: 16px;
-  height: 16px;
+  width: 18px;
+  height: 18px;
   display: flex;
   align-items: center;
   justify-content: center;
+}
+
+.canvas-node-icon svg {
+  width: 18px;
+  height: 18px;
+  display: block;
 }
 
 .canvas-node-id {
@@ -481,6 +497,16 @@ textarea {
 
 .inspector-icon {
   font-size: 22px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.inspector-icon svg {
+  width: 24px;
+  height: 24px;
+  display: block;
 }
 
 .inspector-id {

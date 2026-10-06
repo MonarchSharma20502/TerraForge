@@ -4,6 +4,7 @@
 
 import { type CatalogEntry } from "../core/wasm";
 import type { Spec } from "../spec/model";
+import { KindIcon } from "../KindIcon";
 
 interface InspectorProps {
   spec: Spec;
@@ -37,7 +38,9 @@ export function Inspector({
     <div className="pane inspector">
       <h2 className="pane-title">Inspector</h2>
       <div className="inspector-header">
-        <span className="inspector-icon">{entry?.icon ?? kind}</span>
+        <span className="inspector-icon">
+          <KindIcon kind={kind} />
+        </span>
         <div>
           <div className="inspector-id">{id}</div>
           <div className="inspector-type">{entry?.azureType ?? kind}</div>

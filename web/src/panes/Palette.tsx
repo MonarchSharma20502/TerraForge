@@ -4,6 +4,7 @@
 
 import { useMemo, useState } from "react";
 
+import { KindIcon } from "../KindIcon";
 import { type CatalogEntry } from "../core/wasm";
 
 interface PaletteProps {
@@ -71,7 +72,9 @@ export function Palette({ catalog, onAdd }: PaletteProps) {
                     onClick={() => onAdd(entry.kind)}
                     title={`Drag to the canvas, or click to add ${entry.azureType} to the ${entry.stack} stack`}
                   >
-                    <span className="palette-icon">{entry.icon}</span>
+                    <span className="palette-icon">
+                      <KindIcon kind={entry.kind} />
+                    </span>
                     <span className="palette-kind">{entry.kind}</span>
                     <span className="palette-abbr">{entry.abbr}</span>
                   </button>

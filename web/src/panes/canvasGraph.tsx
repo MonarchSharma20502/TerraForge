@@ -2,6 +2,7 @@ import type { Edge, Node } from "@xyflow/react";
 
 import type { Spec } from "../spec/model";
 import type { CatalogEntry } from "../core/wasm";
+import { KindIcon } from "../KindIcon";
 
 // The NOC governance template pins a colour per architecture tier and a style
 // per connector type. Keeping them in one place keeps the canvas and the legend
@@ -62,7 +63,9 @@ export function toGraph(
         data: {
           label: (
             <div className="canvas-node">
-              <span className="canvas-node-icon">{entry?.icon ?? kind}</span>
+              <span className="canvas-node-icon">
+                <KindIcon kind={kind} />
+              </span>
               <span className="canvas-node-id">{id}</span>
               <span className="canvas-node-kind">{kind}</span>
             </div>
