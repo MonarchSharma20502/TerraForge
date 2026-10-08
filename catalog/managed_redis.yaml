@@ -1,0 +1,20 @@
+kind: managed_redis
+azureType: azurerm_managed_redis
+abbr: mrds
+module: Modules/Data/managedRedis
+stack: Data
+category: Data
+icon: managed-redis
+required: [name, rgName, location, sku_name]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Managed Redis tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

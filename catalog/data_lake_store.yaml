@@ -1,0 +1,24 @@
+kind: data_lake_store
+azureType: azurerm_data_lake_store
+abbr: dls
+module: Modules/Data/dataLakeStore
+stack: Data
+category: Data
+icon: data-lake-store
+required: [name, rgName, location]
+optional:
+  - name: tier
+    type: string
+    default: '"Consumption"'
+    description: Commitment tier of the Data Lake Store.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Data Lake Store tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

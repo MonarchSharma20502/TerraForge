@@ -1,0 +1,27 @@
+kind: mssql_database
+azureType: azurerm_mssql_database
+abbr: sqldb
+module: Modules/Data/mssqlDatabase
+stack: Data
+category: Data
+icon: mssql-database
+required: [name, server_id]
+optional:
+  - name: collation
+    type: string
+    default: '"SQL_Latin1_General_CP1_CI_AS"'
+    description: Collation of the SQL database.
+  - name: sku_name
+    type: string
+    default: '"S0"'
+    description: SKU of the SQL database.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: SQL database tags merged with the stack tags.
+args: {}
+sockets:
+  - name: server_id
+    kind: mssql_server
+    required: true
+blocks: []

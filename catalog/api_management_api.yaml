@@ -1,0 +1,27 @@
+kind: api_management_api
+azureType: azurerm_api_management_api
+abbr: apima
+module: Modules/Integration/apiManagementApi
+stack: Integration
+category: Compute
+icon: api-management-api
+required: [name, api_management_name, revision]
+optional:
+  - name: display_name
+    type: string
+    default: '""'
+    description: Display name of the API.
+  - name: path
+    type: string
+    default: '""'
+    description: Path of the API.
+  - name: protocols
+    type: list(string)
+    default: '["https"]'
+    description: Protocols the API accepts.
+args: {}
+sockets:
+  - name: api_management_name
+    kind: api_management
+    required: true
+blocks: []

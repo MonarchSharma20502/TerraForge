@@ -1,0 +1,18 @@
+kind: network_interface_security_group_association
+azureType: azurerm_network_interface_security_group_association
+abbr: nisga
+module: Modules/Network/networkInterfaceNsgAssociation
+stack: Network
+category: Network
+noName: true
+required: [network_interface_id, network_security_group_id]
+optional: []
+args: {}
+sockets:
+  - name: network_interface_id
+    kind: network_interface
+    required: true
+  - name: network_security_group_id
+    kind: nsg
+    required: true
+blocks: []

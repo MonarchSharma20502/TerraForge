@@ -1,0 +1,19 @@
+kind: traffic_manager_azure_endpoint
+azureType: azurerm_traffic_manager_azure_endpoint
+abbr: tmae
+module: Modules/Network/trafficManagerAzureEndpoint
+stack: Network
+category: Network
+icon: traffic-manager
+required: [name, profile_id, target_resource_id]
+optional:
+  - name: weight
+    type: number
+    default: "100"
+    description: Weight of the traffic manager endpoint.
+args: {}
+sockets:
+  - name: profile_id
+    kind: traffic_manager_profile
+    required: true
+blocks: []

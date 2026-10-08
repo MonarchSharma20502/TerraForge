@@ -1,0 +1,20 @@
+kind: cdn_frontdoor_profile
+azureType: azurerm_cdn_frontdoor_profile
+abbr: afd
+module: Modules/Network/cdnFrontdoorProfile
+stack: Network
+category: Network
+icon: cdn-frontdoor-profile
+required: [name, rgName, sku_name]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Front Door profile tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

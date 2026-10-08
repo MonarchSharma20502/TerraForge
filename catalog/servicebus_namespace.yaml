@@ -1,0 +1,20 @@
+kind: servicebus_namespace
+azureType: azurerm_servicebus_namespace
+abbr: sb
+module: Modules/Data/servicebusNamespace
+stack: Data
+category: Data
+icon: servicebus-namespace
+required: [name, rgName, location, sku]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Service Bus namespace tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

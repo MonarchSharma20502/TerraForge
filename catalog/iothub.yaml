@@ -1,0 +1,28 @@
+kind: iothub
+azureType: azurerm_iothub
+abbr: iot
+module: Modules/Data/iothub
+stack: Data
+category: Data
+icon: iothub
+required: [name, rgName, location]
+optional:
+  - name: sku_name
+    type: string
+    default: '"S1"'
+    description: SKU of the IoT hub.
+  - name: capacity
+    type: number
+    default: "1"
+    description: Units of the IoT hub SKU.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: IoT hub tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

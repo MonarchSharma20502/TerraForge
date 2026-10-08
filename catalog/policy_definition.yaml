@@ -1,0 +1,16 @@
+kind: policy_definition
+azureType: azurerm_policy_definition
+abbr: pol
+module: Modules/Governance/policyDefinition
+stack: Governance
+category: Governance
+icon: policy-definition
+required: [name, policy_type, mode, display_name]
+optional:
+  - name: description
+    type: string
+    default: '""'
+    description: Description of the policy definition.
+args: {}
+sockets: []
+blocks: []

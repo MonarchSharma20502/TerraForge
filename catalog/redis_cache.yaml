@@ -1,0 +1,24 @@
+kind: redis_cache
+azureType: azurerm_redis_cache
+abbr: redis
+module: Modules/Data/redisCache
+stack: Data
+category: Data
+icon: redis-cache
+required: [name, rgName, location, sku_name, family, capacity]
+optional:
+  - name: minimum_tls_version
+    type: string
+    default: '"1.2"'
+    description: Minimum TLS version required by the cache.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Redis cache tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

@@ -1,0 +1,19 @@
+kind: netapp_backup_vault
+azureType: azurerm_netapp_backup_vault
+abbr: anfbv
+module: Modules/Data/netappBackupVault
+stack: Data
+category: Data
+icon: netapp-backup-vault
+required: [name, account_name, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Backup vault tags merged with the stack tags.
+args: {}
+sockets:
+  - name: account_name
+    kind: netapp_account
+    required: true
+blocks: []

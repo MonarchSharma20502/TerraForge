@@ -1,0 +1,36 @@
+kind: postgresql_flexible_server
+azureType: azurerm_postgresql_flexible_server
+abbr: psql
+module: Modules/Data/postgresqlFlexibleServer
+stack: Data
+category: Data
+icon: postgresql-flexible-server
+required: [name, rgName, location]
+optional:
+  - name: sku_name
+    type: string
+    default: '"Standard_D2s_v3"'
+    description: SKU of the flexible server.
+  - name: storage_mb
+    type: number
+    default: "32768"
+    description: Storage of the flexible server in MB.
+  - name: version
+    type: string
+    default: '"14"'
+    description: PostgreSQL version of the flexible server.
+  - name: administrator_login
+    type: string
+    default: '"psqladmin"'
+    description: Administrator login of the flexible server.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Flexible server tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

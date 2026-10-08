@@ -1,0 +1,20 @@
+kind: app_service_certificate
+azureType: azurerm_app_service_certificate
+abbr: asc
+module: Modules/Compute/appServiceCertificate
+stack: Compute
+category: Compute
+icon: app-service-certificate
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: App service certificate tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

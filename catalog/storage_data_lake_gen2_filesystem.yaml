@@ -1,0 +1,19 @@
+kind: storage_data_lake_gen2_filesystem
+azureType: azurerm_storage_data_lake_gen2_filesystem
+abbr: adls
+module: Modules/Data/storageDataLakeGen2Filesystem
+stack: Data
+category: Data
+icon: storage-data-lake
+required: [name, storage_account_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Filesystem tags merged with the stack tags.
+args: {}
+sockets:
+  - name: storage_account_id
+    kind: storage_account
+    required: true
+blocks: []

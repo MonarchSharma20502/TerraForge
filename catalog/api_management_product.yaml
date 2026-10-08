@@ -1,0 +1,19 @@
+kind: api_management_product
+azureType: azurerm_api_management_product
+abbr: apimp
+module: Modules/Integration/apiManagementProduct
+stack: Integration
+category: Compute
+noName: true
+required: [api_management_name, product_id, published, display_name]
+optional:
+  - name: description
+    type: string
+    default: '""'
+    description: Description of the API Management product.
+args: {}
+sockets:
+  - name: api_management_name
+    kind: api_management
+    required: true
+blocks: []

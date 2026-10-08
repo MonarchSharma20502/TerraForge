@@ -1,0 +1,19 @@
+kind: log_analytics_solution
+azureType: azurerm_log_analytics_solution
+abbr: las
+module: Modules/Monitoring/logAnalyticsSolution
+stack: Core
+category: Monitoring
+noName: true
+required: [location, resource_group_name, solution_name, workspace_name, workspace_resource_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Solution tags merged with the stack tags.
+args: {}
+sockets:
+  - name: workspace_resource_id
+    kind: log_analytics
+    required: true
+blocks: []

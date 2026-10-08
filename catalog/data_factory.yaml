@@ -1,0 +1,20 @@
+kind: data_factory
+azureType: azurerm_data_factory
+abbr: adf
+module: Modules/Data/dataFactory
+stack: Data
+category: Data
+icon: data-factory
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Data factory tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

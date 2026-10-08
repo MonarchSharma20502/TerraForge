@@ -1,0 +1,20 @@
+kind: private_link_service
+azureType: azurerm_private_link_service
+abbr: pls
+module: Modules/Network/privateLinkService
+stack: Network
+category: Network
+icon: private-link-service
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Private link service tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

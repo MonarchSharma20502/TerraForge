@@ -1,0 +1,15 @@
+kind: lb_nat_pool
+azureType: azurerm_lb_nat_pool
+abbr: lbnp
+module: Modules/Network/lbNatPool
+stack: Network
+category: Network
+icon: load-balancer
+required: [name, loadbalancer_id, protocol, frontend_ip_configuration_name, frontend_port_start, frontend_port_end, backend_port]
+optional: []
+args: {}
+sockets:
+  - name: loadbalancer_id
+    kind: load_balancer
+    required: true
+blocks: []

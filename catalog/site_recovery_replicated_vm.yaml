@@ -1,0 +1,21 @@
+kind: site_recovery_replicated_vm
+azureType: azurerm_site_recovery_replicated_vm
+abbr: asrrvm
+module: Modules/Security/siteRecoveryReplicatedVm
+stack: Core
+category: Security
+icon: site-recovery
+required: [name, recovery_vault_name, source_recovery_fabric_name, source_recovery_protection_container_name, source_vm_id, target_recovery_fabric_id, target_recovery_protection_container_id, target_resource_group_id, recovery_replication_policy_id]
+optional: []
+args: {}
+sockets:
+  - name: recovery_vault_name
+    kind: recovery_services_vault
+    required: true
+  - name: source_vm_id
+    kind: virtual_machine
+    required: true
+  - name: recovery_replication_policy_id
+    kind: site_recovery_replication_policy
+    required: true
+blocks: []

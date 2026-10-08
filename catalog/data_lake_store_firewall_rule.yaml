@@ -1,0 +1,15 @@
+kind: data_lake_store_firewall_rule
+azureType: azurerm_data_lake_store_firewall_rule
+abbr: dlsfw
+module: Modules/Data/dataLakeStoreFirewallRule
+stack: Data
+category: Data
+icon: data-lake-store
+required: [name, account_name, start_ip_address, end_ip_address]
+optional: []
+args: {}
+sockets:
+  - name: account_name
+    kind: data_lake_store
+    required: true
+blocks: []

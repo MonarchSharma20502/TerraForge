@@ -1,0 +1,31 @@
+kind: network_security_rule
+azureType: azurerm_network_security_rule
+abbr: nsr
+module: Modules/Network/networkSecurityRule
+stack: Network
+category: Network
+icon: network-security-rule
+required: [name, resource_group_name, network_security_group_name, priority, direction, access, protocol]
+optional:
+  - name: source_port_range
+    type: string
+    default: '"*"'
+    description: Source port range of the rule.
+  - name: destination_port_range
+    type: string
+    default: '"*"'
+    description: Destination port range of the rule.
+  - name: source_address_prefix
+    type: string
+    default: '"*"'
+    description: Source address prefix of the rule.
+  - name: destination_address_prefix
+    type: string
+    default: '"*"'
+    description: Destination address prefix of the rule.
+args: {}
+sockets:
+  - name: network_security_group_name
+    kind: nsg
+    required: true
+blocks: []

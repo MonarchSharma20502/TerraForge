@@ -1,6 +1,7 @@
-// The palette lists every resource kind the catalog knows, grouped by category.
-// It is generated from the catalog data, not hand-built per kind. Groups collapse
-// and the list filters, so picking what to place is a short list, not a wall.
+// The catalog pane: a tabbed, card-based resource browser. Tabs pick the
+// category, the dropdown picks the deployment tier, and each card is one
+// resource kind you drag or click onto the canvas. It is generated from the
+// catalog data, not hand-built per kind.
 
 import { useMemo, useState } from "react";
 
@@ -14,104 +15,128 @@ interface PaletteProps {
 
 export function Palette({ catalog, onAdd }: PaletteProps) {
   const [filter, setFilter] = useState("");
-  const [collapsed, setCollapsed] = useState<Record<string, boolean>>({});
+  const [category, setCategory] = useState("All");
+  const [stack, setStack] = useState("All");
 
-  const groups = useMemo(
-    () => groupByCategory(catalog, filter.trim().toLowerCase()),
-    [catalog, filter],
-  );
+  const categories = useMemo(() => {
+    const seen = new Set<string>();
+    catalog.forEach((entry) => seen.add(entry.category));
+    return ["All", ...Array.from(seen).sort()];
+  }, [catalog]);
 
-  const shown = groups.reduce((sum, [, entries]) => sum + entries.length, 0);
+  const stacks = useMemo(() => {
+    const seen = new Set<string>();
+    catalog.forEach((entry) => seen.add(entry.stack));
+    return ["All", ...Array.from(seen).sort()];
+  }, [catalog]);
+
+  const counts = useMemo(() => {
+    const table: Record<string, number> = { All: catalog.length };
+    catalog.forEach((entry) => {
+      table[entry.category] = (table[entry.category] ?? 0) + 1;
+    });
+    return table;
+  }, [catalog]);
+
+  const entries = useMemo(() => {
+    const query = filter.trim().toLowerCase();
+    return catalog
+      .filter((entry) => category === "All" || entry.category === category)
+      .filter((entry) => stack === "All" || entry.stack === stack)
+      .filter(
+        (entry) =>
+          !query ||
+          entry.kind.includes(query) ||
+          entry.category.toLowerCase().includes(query),
+      )
+      .sort((a, b) => a.kind.localeCompare(b.kind));
+  }, [catalog, category, stack, filter]);
 
   return (
     <div className="pane palette">
-      <h2 className="pane-title">Resource kinds</h2>
-      <input
-        className="palette-filter"
-        type="search"
-        placeholder="Filter resources..."
-        value={filter}
-        onChange={(event) => setFilter(event.target.value)}
-        aria-label="Filter resource kinds"
-      />
-      {groups.length === 0 ? (
+      <h2 className="pane-title">Resource catalog</h2>
+      <div
+        className="palette-tabs"
+        role="tablist"
+        aria-label="Resource category"
+      >
+        {categories.map((name) => (
+          <button
+            key={name}
+            type="button"
+            role="tab"
+            aria-selected={category === name}
+            className={category === name ? "palette-tab active" : "palette-tab"}
+            onClick={() => setCategory(name)}
+          >
+            {name}
+            <span className="palette-tab-count">{counts[name] ?? 0}</span>
+          </button>
+        ))}
+      </div>
+      <div className="palette-controls">
+        <label className="palette-select-label">
+          <span>Tier</span>
+          <select
+            className="palette-select"
+            value={stack}
+            onChange={(event) => setStack(event.target.value)}
+            aria-label="Deployment tier"
+          >
+            {stacks.map((name) => (
+              <option key={name} value={name}>
+                {name === "All" ? "All tiers" : `${name} tier`}
+              </option>
+            ))}
+          </select>
+        </label>
+        <input
+          className="palette-filter"
+          type="search"
+          placeholder="Search..."
+          value={filter}
+          onChange={(event) => setFilter(event.target.value)}
+          aria-label="Search resource kinds"
+        />
+      </div>
+      {entries.length === 0 ? (
         <p className="palette-empty">
           No resource kind matches &ldquo;{filter}&rdquo;.
         </p>
       ) : (
-        groups.map(([category, entries]) => {
-          const isCollapsed = collapsed[category] ?? false;
-          return (
-            <section key={category} className="palette-group">
-              <button
-                className="palette-category"
-                aria-expanded={!isCollapsed}
-                onClick={() =>
-                  setCollapsed((value) => ({ ...value, [category]: !isCollapsed }))
-                }
-                title={isCollapsed ? `Expand ${category}` : `Collapse ${category}`}
-              >
-                <span className="palette-category-name">{category}</span>
-                <span className="palette-category-count">{entries.length}</span>
-                <span className="palette-category-caret">
-                  {isCollapsed ? "▸" : "▾"}
-                </span>
-              </button>
-              {!isCollapsed &&
-                entries.map((entry) => (
-                  <button
-                    key={entry.kind}
-                    className="palette-item"
-                    draggable
-                    onDragStart={(event) =>
-                      event.dataTransfer.setData(
-                        "application/x-autonation-kind",
-                        entry.kind,
-                      )
-                    }
-                    onClick={() => onAdd(entry.kind)}
-                    title={`Drag to the canvas, or click to add ${entry.azureType} to the ${entry.stack} stack`}
-                  >
-                    <span className="palette-icon">
-                      <KindIcon kind={entry.kind} />
-                    </span>
-                    <span className="palette-kind">{entry.kind}</span>
-                    <span className="palette-abbr">{entry.abbr}</span>
-                  </button>
-                ))}
-            </section>
-          );
-        })
+        <div className="palette-grid">
+          {entries.map((entry) => (
+            <button
+              key={entry.kind}
+              type="button"
+              className="palette-card"
+              draggable
+              onDragStart={(event) =>
+                event.dataTransfer.setData(
+                  "application/x-autonation-kind",
+                  entry.kind,
+                )
+              }
+              onClick={() => onAdd(entry.kind)}
+              title={`Drag to the canvas, or click to add ${entry.azureType} to the ${entry.stack} stack`}
+            >
+              <span className="palette-card-icon">
+                <KindIcon kind={entry.kind} />
+              </span>
+              <span className="palette-card-text">
+                <span className="palette-card-name">{entry.kind}</span>
+                <span className="palette-card-type">{entry.abbr}</span>
+              </span>
+              <span className="palette-card-add" aria-hidden="true">
+                +
+              </span>
+            </button>
+          ))}
+        </div>
       )}
-      <p className="palette-summary">{shown} available</p>
+      <p className="palette-summary">
+        {entries.length} of {catalog.length} available
+      </p>
     </div>
   );
-}
-
-// groupByCategory keeps the palette deterministic: alphabetical within a
-// category, categories in the order they first appear. A filter narrows both.
-function groupByCategory(
-  catalog: CatalogEntry[],
-  filter: string,
-): [string, CatalogEntry[]][] {
-  const order: string[] = [];
-  const byCategory = new Map<string, CatalogEntry[]>();
-  for (const entry of catalog) {
-    if (
-      filter &&
-      !entry.kind.includes(filter) &&
-      !entry.category.toLowerCase().includes(filter)
-    ) {
-      continue;
-    }
-    if (!byCategory.has(entry.category)) {
-      byCategory.set(entry.category, []);
-      order.push(entry.category);
-    }
-    byCategory.get(entry.category)!.push(entry);
-  }
-  return order.map((category) => [
-    category,
-    [...byCategory.get(category)!].sort((a, b) => a.kind.localeCompare(b.kind)),
-  ]);
 }

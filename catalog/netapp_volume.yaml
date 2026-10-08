@@ -1,0 +1,25 @@
+kind: netapp_volume
+azureType: azurerm_netapp_volume
+abbr: anfv
+module: Modules/Data/netappVolume
+stack: Data
+category: Data
+icon: netapp-volume
+required: [name, account_name, pool_name, location, service_level, storage_quota_in_gb, volume_path, subnet_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: NetApp volume tags merged with the stack tags.
+args: {}
+sockets:
+  - name: account_name
+    kind: netapp_account
+    required: true
+  - name: pool_name
+    kind: netapp_pool
+    required: true
+  - name: subnet_id
+    kind: subnet
+    required: true
+blocks: []

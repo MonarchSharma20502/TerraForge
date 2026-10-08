@@ -1,0 +1,18 @@
+kind: network_interface_nat_rule_association
+azureType: azurerm_network_interface_nat_rule_association
+abbr: ninra
+module: Modules/Network/networkInterfaceNatRuleAssociation
+stack: Network
+category: Network
+noName: true
+required: [network_interface_id, ip_configuration_name, nat_rule_id]
+optional: []
+args: {}
+sockets:
+  - name: network_interface_id
+    kind: network_interface
+    required: true
+  - name: nat_rule_id
+    kind: lb_nat_rule
+    required: true
+blocks: []

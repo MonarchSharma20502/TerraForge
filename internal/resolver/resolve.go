@@ -103,7 +103,39 @@ func suffixFor(kind string, index int) string {
 	case "resource_group":
 		return fmt.Sprintf("paas%02d", index+1)
 	case "vnet", "subnet", "nsg", "route_table", "public_ip", "bastion",
-		"network_interface", "private_endpoint", "private_dns_zone":
+		"network_interface", "private_endpoint", "private_dns_zone",
+		"application_gateway", "load_balancer", "firewall",
+		"virtual_network_gateway", "virtual_wan", "virtual_hub",
+		"nat_gateway", "public_ip_prefix", "application_security_group",
+		"proximity_placement_group", "private_link_service", "dns_zone",
+		"traffic_manager_profile", "cdn_frontdoor_profile",
+		"cdn_frontdoor_endpoint", "cdn_frontdoor_origin_group",
+		"cdn_frontdoor_origin", "cdn_frontdoor_route",
+		"cdn_frontdoor_firewall_policy", "cdn_frontdoor_custom_domain",
+		"cdn_frontdoor_custom_domain_association",
+		"cdn_frontdoor_rule_set", "cdn_frontdoor_rule",
+		"cdn_frontdoor_secret", "cdn_frontdoor_security_policy",
+		"palo_alto_local_rulestack", "palo_alto_local_rulestack_rule",
+		"palo_alto_next_generation_firewall_virtual_network_local_rulestack",
+		"palo_alto_next_generation_firewall_virtual_hub_panorama",
+		"palo_alto_virtual_network_appliance",
+		"network_function_azure_traffic_collector",
+		"virtual_network_peering", "virtual_network_gateway_connection",
+		"network_security_rule", "virtual_network_dns_servers",
+		"dns_cname_record", "dns_txt_record", "private_dns_cname_record",
+		"private_dns_zone_virtual_network_link",
+		"traffic_manager_azure_endpoint",
+		"subnet_network_security_group_association",
+		"subnet_route_table_association", "subnet_nat_gateway_association",
+		"network_interface_security_group_association",
+		"network_interface_application_security_group_association",
+		"network_interface_backend_address_pool_association",
+		"network_interface_nat_rule_association",
+		"lb_backend_address_pool", "lb_probe", "lb_rule", "lb_nat_rule",
+		"lb_nat_pool", "lb_outbound_rule",
+		"firewall_application_rule_collection",
+		"firewall_network_rule_collection",
+		"nat_gateway_public_ip_association":
 		return fmt.Sprintf("network%02d", index+1)
 	default:
 		return fmt.Sprintf("%02d", index+1)

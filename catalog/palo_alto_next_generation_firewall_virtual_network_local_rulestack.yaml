@@ -1,0 +1,23 @@
+kind: palo_alto_next_generation_firewall_virtual_network_local_rulestack
+azureType: azurerm_palo_alto_next_generation_firewall_virtual_network_local_rulestack
+abbr: pangw
+module: Modules/Network/paloAltoNgfwVirtualNetwork
+stack: Network
+category: Network
+icon: palo-alto-ngfw
+required: [name, rgName, rulestack_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Firewall tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: rulestack_id
+    kind: palo_alto_local_rulestack
+    required: true
+blocks: []

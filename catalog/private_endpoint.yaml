@@ -1,0 +1,23 @@
+kind: private_endpoint
+azureType: azurerm_private_endpoint
+abbr: pe
+module: Modules/Network/privateEndpoint
+stack: Network
+category: Network
+icon: private-endpoint
+required: [name, rgName, location, subnet_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Private endpoint tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: subnet_id
+    kind: subnet
+    required: true
+blocks: []

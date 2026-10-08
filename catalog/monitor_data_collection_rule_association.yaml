@@ -1,0 +1,15 @@
+kind: monitor_data_collection_rule_association
+azureType: azurerm_monitor_data_collection_rule_association
+abbr: dcra
+module: Modules/Monitoring/monitorDataCollectionRuleAssociation
+stack: Core
+category: Monitoring
+icon: monitor-data-collection-rule
+required: [name, target_resource_id, data_collection_rule_id]
+optional: []
+args: {}
+sockets:
+  - name: data_collection_rule_id
+    kind: monitor_data_collection_rule
+    required: true
+blocks: []

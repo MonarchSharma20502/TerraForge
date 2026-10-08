@@ -1,0 +1,24 @@
+kind: mssql_server
+azureType: azurerm_mssql_server
+abbr: sql
+module: Modules/Data/mssqlServer
+stack: Data
+category: Data
+icon: mssql-server
+required: [name, rgName, location, version]
+optional:
+  - name: administrator_login
+    type: string
+    default: '"sqladmin"'
+    description: Administrator login of the SQL server.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: SQL server tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

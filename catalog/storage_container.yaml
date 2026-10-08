@@ -1,0 +1,19 @@
+kind: storage_container
+azureType: azurerm_storage_container
+abbr: stc
+module: Modules/Data/storageContainer
+stack: Data
+category: Data
+icon: storage-container
+required: [name, storage_account_id]
+optional:
+  - name: container_access_type
+    type: string
+    default: '"private"'
+    description: Access level of the blob container.
+args: {}
+sockets:
+  - name: storage_account_id
+    kind: storage_account
+    required: true
+blocks: []

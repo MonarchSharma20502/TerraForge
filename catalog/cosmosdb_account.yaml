@@ -1,0 +1,28 @@
+kind: cosmosdb_account
+azureType: azurerm_cosmosdb_account
+abbr: cosmos
+module: Modules/Data/cosmosdbAccount
+stack: Data
+category: Data
+icon: cosmosdb-account
+required: [name, rgName, location, offer_type]
+optional:
+  - name: kind
+    type: string
+    default: '"GlobalDocumentDB"'
+    description: Kind of the Cosmos DB account.
+  - name: consistency_level
+    type: string
+    default: '"Session"'
+    description: Default consistency level of the account.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Cosmos DB account tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

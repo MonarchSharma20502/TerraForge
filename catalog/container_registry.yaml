@@ -1,0 +1,30 @@
+kind: container_registry
+azureType: azurerm_container_registry
+abbr: acr
+module: Modules/Data/containerRegistry
+stack: Data
+category: Data
+icon: container-registry
+required: [name, rgName, location, sku]
+optional:
+  - name: admin_enabled
+    type: bool
+    default: "false"
+    description: Whether the admin user is enabled on the registry.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Container registry tags merged with the stack tags.
+strictName:
+  min: 5
+  max: 50
+  lowercase: true
+  alnumOnly: true
+  stripDashes: true
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

@@ -1,0 +1,23 @@
+kind: app_service_source_control
+azureType: azurerm_app_service_source_control
+abbr: assc
+module: Modules/Compute/appServiceSourceControl
+stack: Compute
+category: Compute
+noName: true
+required: [app_id]
+optional:
+  - name: repo_url
+    type: string
+    default: '""'
+    description: Repository URL of the source control.
+  - name: branch
+    type: string
+    default: '"main"'
+    description: Branch the source control tracks.
+args: {}
+sockets:
+  - name: app_id
+    kind: linux_web_app
+    required: true
+blocks: []

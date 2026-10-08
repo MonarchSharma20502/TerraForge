@@ -1,0 +1,28 @@
+kind: load_balancer
+azureType: azurerm_lb
+abbr: lb
+module: Modules/Network/loadBalancer
+stack: Network
+category: Network
+icon: load-balancer
+required: [name, rgName, location]
+optional:
+  - name: sku
+    type: string
+    default: '"Standard"'
+    description: SKU of the load balancer.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Load balancer tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: frontend_ip_configuration
+    attributes:
+      - name: name
+        value: '"frontend"'

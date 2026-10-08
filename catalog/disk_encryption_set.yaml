@@ -1,0 +1,23 @@
+kind: disk_encryption_set
+azureType: azurerm_disk_encryption_set
+abbr: des
+module: Modules/Security/diskEncryptionSet
+stack: Core
+category: Security
+icon: disk-encryption-set
+required: [name, rgName, location, key_vault_key_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Disk encryption set tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: key_vault_key_id
+    kind: key_vault_key
+    required: true
+blocks: []

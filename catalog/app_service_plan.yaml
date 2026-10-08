@@ -1,0 +1,32 @@
+kind: app_service_plan
+azureType: azurerm_service_plan
+abbr: asp
+module: Modules/Compute/appServicePlan
+stack: Compute
+category: Compute
+icon: app-service-plan
+required: [name, rgName, location]
+optional:
+  - name: os_type
+    type: string
+    default: '"Linux"'
+    description: Operating system of the app service plan.
+  - name: sku_name
+    type: string
+    default: '"S1"'
+    description: SKU of the app service plan.
+  - name: worker_count
+    type: number
+    default: "1"
+    description: Number of workers in the app service plan.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: App service plan tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

@@ -1,0 +1,22 @@
+kind: lb_outbound_rule
+azureType: azurerm_lb_outbound_rule
+abbr: lbor
+module: Modules/Network/lbOutboundRule
+stack: Network
+category: Network
+icon: load-balancer
+required: [name, loadbalancer_id, protocol, backend_address_pool_id]
+optional:
+  - name: idle_timeout_in_minutes
+    type: number
+    default: "4"
+    description: Idle timeout of the outbound rule in minutes.
+args: {}
+sockets:
+  - name: loadbalancer_id
+    kind: load_balancer
+    required: true
+  - name: backend_address_pool_id
+    kind: lb_backend_address_pool
+    required: true
+blocks: []

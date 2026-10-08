@@ -1,0 +1,20 @@
+kind: virtual_desktop_workspace
+azureType: azurerm_virtual_desktop_workspace
+abbr: avdw
+module: Modules/Desktop/virtualDesktopWorkspace
+stack: Desktop
+category: Compute
+icon: virtual-desktop-workspace
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Workspace tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

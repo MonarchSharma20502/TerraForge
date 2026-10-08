@@ -1,0 +1,20 @@
+kind: api_management
+azureType: azurerm_api_management
+abbr: apim
+module: Modules/Integration/apiManagement
+stack: Integration
+category: Compute
+icon: api-management
+required: [name, rgName, location, publisher_name, publisher_email, sku_name]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: API Management tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

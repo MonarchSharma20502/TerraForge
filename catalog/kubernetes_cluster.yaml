@@ -1,0 +1,30 @@
+kind: kubernetes_cluster
+azureType: azurerm_kubernetes_cluster
+abbr: aks
+module: Modules/Compute/kubernetesCluster
+stack: Compute
+category: Compute
+icon: kubernetes-cluster
+required: [name, rgName, location]
+optional:
+  - name: dns_prefix
+    type: string
+    default: '""'
+    description: DNS prefix of the managed cluster.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Managed cluster tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: default_node_pool
+    attributes:
+      - name: name
+        value: '"default"'
+      - name: vm_size
+        value: '"Standard_D2_v2"'

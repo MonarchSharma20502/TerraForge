@@ -1,0 +1,24 @@
+kind: managed_disk
+azureType: azurerm_managed_disk
+abbr: disk
+module: Modules/Compute/managedDisk
+stack: Compute
+category: Compute
+icon: managed-disk
+required: [name, rgName, location, storage_account_type, create_option]
+optional:
+  - name: disk_size_gb
+    type: number
+    default: "128"
+    description: Size of the managed disk in GB.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Managed disk tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

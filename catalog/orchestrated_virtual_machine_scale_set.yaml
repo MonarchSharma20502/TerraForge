@@ -1,0 +1,20 @@
+kind: orchestrated_virtual_machine_scale_set
+azureType: azurerm_orchestrated_virtual_machine_scale_set
+abbr: ovmss
+module: Modules/Compute/orchestratedVirtualMachineScaleSet
+stack: Compute
+category: Compute
+icon: orchestrated-vm-scale-set
+required: [name, rgName, location, platform_fault_domain_count]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Scale set tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

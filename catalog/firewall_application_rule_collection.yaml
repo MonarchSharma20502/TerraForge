@@ -1,0 +1,19 @@
+kind: firewall_application_rule_collection
+azureType: azurerm_firewall_application_rule_collection
+abbr: fwarc
+module: Modules/Network/firewallApplicationRuleCollection
+stack: Network
+category: Network
+icon: firewall
+required: [name, azure_firewall_name, priority, action]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Rule collection tags merged with the stack tags.
+args: {}
+sockets:
+  - name: azure_firewall_name
+    kind: firewall
+    required: true
+blocks: []

@@ -1,0 +1,18 @@
+kind: subnet_route_table_association
+azureType: azurerm_subnet_route_table_association
+abbr: srta
+module: Modules/Network/subnetRouteTableAssociation
+stack: Network
+category: Network
+noName: true
+required: [subnet_id, route_table_id]
+optional: []
+args: {}
+sockets:
+  - name: subnet_id
+    kind: subnet
+    required: true
+  - name: route_table_id
+    kind: route_table
+    required: true
+blocks: []

@@ -1,0 +1,20 @@
+kind: service_fabric_cluster
+azureType: azurerm_service_fabric_cluster
+abbr: sf
+module: Modules/Data/serviceFabricCluster
+stack: Data
+category: Data
+icon: service-fabric-cluster
+required: [name, rgName, location, reliability_level, vm_image, upgrade_mode, management_endpoint]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Service Fabric cluster tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

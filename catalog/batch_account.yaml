@@ -1,0 +1,20 @@
+kind: batch_account
+azureType: azurerm_batch_account
+abbr: bat
+module: Modules/Data/batchAccount
+stack: Data
+category: Data
+icon: batch-account
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Batch account tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

@@ -1,0 +1,19 @@
+kind: cdn_frontdoor_rule_set
+azureType: azurerm_cdn_frontdoor_rule_set
+abbr: afdrs
+module: Modules/Network/cdnFrontdoorRuleSet
+stack: Network
+category: Network
+icon: cdn-frontdoor-rule-set
+required: [name, cdn_frontdoor_profile_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Rule set tags merged with the stack tags.
+args: {}
+sockets:
+  - name: cdn_frontdoor_profile_id
+    kind: cdn_frontdoor_profile
+    required: true
+blocks: []

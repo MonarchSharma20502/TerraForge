@@ -1,0 +1,19 @@
+kind: stream_analytics_stream_input_eventhub_v2
+azureType: azurerm_stream_analytics_stream_input_eventhub_v2
+abbr: asaeh
+module: Modules/Data/streamAnalyticsStreamInputEventhubV2
+stack: Data
+category: Data
+icon: stream-analytics-input
+required: [name, stream_analytics_job_id, eventhub_name, servicebus_namespace]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Stream input tags merged with the stack tags.
+args: {}
+sockets:
+  - name: eventhub_name
+    kind: eventhub
+    required: true
+blocks: []

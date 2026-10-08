@@ -1,0 +1,18 @@
+kind: databricks_workspace_root_dbfs_customer_managed_key
+azureType: azurerm_databricks_workspace_root_dbfs_customer_managed_key
+abbr: dbwcmk
+module: Modules/Data/databricksWorkspaceRootDbfsCmk
+stack: Data
+category: Data
+noName: true
+required: [workspace_id, key_vault_key_id]
+optional: []
+args: {}
+sockets:
+  - name: workspace_id
+    kind: databricks_workspace
+    required: true
+  - name: key_vault_key_id
+    kind: key_vault_key
+    required: true
+blocks: []

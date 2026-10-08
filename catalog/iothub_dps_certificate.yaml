@@ -1,0 +1,15 @@
+kind: iothub_dps_certificate
+azureType: azurerm_iothub_dps_certificate
+abbr: iotdpsc
+module: Modules/Data/iothubDpsCertificate
+stack: Data
+category: Data
+icon: iothub-dps
+required: [name, iot_dps_name, certificate_content]
+optional: []
+args: {}
+sockets:
+  - name: iot_dps_name
+    kind: iothub_dps
+    required: true
+blocks: []

@@ -1,0 +1,23 @@
+kind: key_vault_key
+azureType: azurerm_key_vault_key
+abbr: kvk
+module: Modules/Security/keyVaultKey
+stack: Core
+category: Security
+icon: key-vault-key
+required: [name, key_vault_id, key_type, key_opts]
+optional:
+  - name: key_size
+    type: number
+    default: "2048"
+    description: Size of the key vault key in bits.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Key vault key tags merged with the stack tags.
+args: {}
+sockets:
+  - name: key_vault_id
+    kind: key_vault
+    required: true
+blocks: []

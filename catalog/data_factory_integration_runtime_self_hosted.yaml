@@ -1,0 +1,19 @@
+kind: data_factory_integration_runtime_self_hosted
+azureType: azurerm_data_factory_integration_runtime_self_hosted
+abbr: adfir
+module: Modules/Data/dataFactoryIntegrationRuntimeSelfHosted
+stack: Data
+category: Data
+icon: data-factory
+required: [name, data_factory_id]
+optional:
+  - name: description
+    type: string
+    default: '""'
+    description: Description of the integration runtime.
+args: {}
+sockets:
+  - name: data_factory_id
+    kind: data_factory
+    required: true
+blocks: []

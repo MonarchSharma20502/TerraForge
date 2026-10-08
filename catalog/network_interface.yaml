@@ -1,0 +1,26 @@
+kind: network_interface
+azureType: azurerm_network_interface
+abbr: nic
+module: Modules/Network/networkInterface
+stack: Network
+category: Network
+icon: network-interface
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Network interface tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: ip_configuration
+    attributes:
+      - name: name
+        value: '"ipconfig"'
+      - name: private_ip_address_allocation
+        value: '"Dynamic"'

@@ -1,0 +1,20 @@
+kind: logic_app_workflow
+azureType: azurerm_logic_app_workflow
+abbr: la
+module: Modules/Data/logicAppWorkflow
+stack: Data
+category: Data
+icon: logic-app
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Logic app tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

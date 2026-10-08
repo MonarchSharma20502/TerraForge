@@ -132,7 +132,9 @@ func (e *Emitter) moduleMain(entry *catalog.Entry) (string, error) {
 		}
 		r := body.AppendNewBlock("resource", []string{entry.AzureType, "this"})
 		rb := r.Body()
-		rb.SetAttributeRaw("name", gohclTokens(e.strictNameExpr(entry)))
+		if !entry.NoName {
+			rb.SetAttributeRaw("name", gohclTokens(e.strictNameExpr(entry)))
+		}
 		for _, v := range entry.Required {
 			if v == "name" {
 				continue
@@ -240,8 +242,10 @@ func (e *Emitter) moduleOutput(entry *catalog.Entry) (string, error) {
 	return format(func(body *hclwrite.Body) {
 		o := body.AppendNewBlock("output", []string{"id"}).Body()
 		o.SetAttributeRaw("value", gohclTokens(entry.AzureType+".this.id"))
-		n := body.AppendNewBlock("output", []string{"name"}).Body()
-		n.SetAttributeRaw("value", gohclTokens(entry.AzureType+".this.name"))
+		if !entry.NoName {
+			n := body.AppendNewBlock("output", []string{"name"}).Body()
+			n.SetAttributeRaw("value", gohclTokens(entry.AzureType+".this.name"))
+		}
 	}), nil
 }
 
@@ -283,8 +287,13 @@ func (e *Emitter) stackMain(plan *resolver.Plan, stack string, res []*resolver.R
 			mod := body.AppendNewBlock("module", []string{r.Component.ID})
 			mb := mod.Body()
 			mb.SetAttributeRaw("source", gohclTokens("\"../../"+entry.Module+"\""))
-			mb.SetAttributeRaw("name", gohclTokens("local."+r.Component.ID+"_name"))
+			if !entry.NoName {
+				mb.SetAttributeRaw("name", gohclTokens("local."+r.Component.ID+"_name"))
+			}
 			for _, v := range entry.Required {
+				if entry.NoName && v == "name" {
+					continue
+				}
 				if supplier, ok := r.Bindings[v]; ok {
 					mb.SetAttributeRaw(v, gohclTokens("local."+supplier+"_name"))
 					continue

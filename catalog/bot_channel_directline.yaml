@@ -1,0 +1,19 @@
+kind: bot_channel_directline
+azureType: azurerm_bot_channel_directline
+abbr: botdl
+module: Modules/Integration/botChannelDirectline
+stack: Integration
+category: Compute
+noName: true
+required: [bot_name, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Bot channel tags merged with the stack tags.
+args: {}
+sockets:
+  - name: bot_name
+    kind: bot_channels_registration
+    required: true
+blocks: []

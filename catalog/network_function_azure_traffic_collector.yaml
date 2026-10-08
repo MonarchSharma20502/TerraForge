@@ -1,0 +1,20 @@
+kind: network_function_azure_traffic_collector
+azureType: azurerm_network_function_azure_traffic_collector
+abbr: atc
+module: Modules/Network/azureTrafficCollector
+stack: Network
+category: Network
+icon: azure-traffic-collector
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Traffic collector tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

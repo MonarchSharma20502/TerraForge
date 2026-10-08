@@ -1,0 +1,23 @@
+kind: mssql_failover_group
+azureType: azurerm_mssql_failover_group
+abbr: sqlfg
+module: Modules/Data/mssqlFailoverGroup
+stack: Data
+category: Data
+icon: mssql-failover-group
+required: [name, server_id]
+optional:
+  - name: secondary_server_name
+    type: string
+    default: '""'
+    description: Secondary server of the failover group.
+  - name: databases
+    type: list(string)
+    default: "[]"
+    description: Databases in the failover group.
+args: {}
+sockets:
+  - name: server_id
+    kind: mssql_server
+    required: true
+blocks: []

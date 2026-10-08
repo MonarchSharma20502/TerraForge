@@ -1,0 +1,12 @@
+kind: security_center_subscription_pricing
+azureType: azurerm_security_center_subscription_pricing
+abbr: asc
+module: Modules/Governance/securityCenterPricing
+stack: Governance
+category: Governance
+noName: true
+required: [tier]
+optional: []
+args: {}
+sockets: []
+blocks: []

@@ -1,0 +1,15 @@
+kind: site_recovery_fabric
+azureType: azurerm_site_recovery_fabric
+abbr: asrf
+module: Modules/Security/siteRecoveryFabric
+stack: Core
+category: Security
+icon: site-recovery
+required: [name, recovery_vault_name, location]
+optional: []
+args: {}
+sockets:
+  - name: recovery_vault_name
+    kind: recovery_services_vault
+    required: true
+blocks: []

@@ -1,0 +1,19 @@
+kind: servicebus_topic
+azureType: azurerm_servicebus_topic
+abbr: sbt
+module: Modules/Data/servicebusTopic
+stack: Data
+category: Data
+icon: servicebus-topic
+required: [name, namespace_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Service Bus topic tags merged with the stack tags.
+args: {}
+sockets:
+  - name: namespace_id
+    kind: servicebus_namespace
+    required: true
+blocks: []

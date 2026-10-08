@@ -1,0 +1,33 @@
+kind: virtual_machine
+azureType: azurerm_virtual_machine
+abbr: vm
+module: Modules/Compute/virtualMachine
+stack: Compute
+category: Compute
+icon: virtual-machine
+required: [name, rgName, location, vm_size, network_interface_ids]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Virtual machine tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: network_interface_ids
+    kind: network_interface
+    required: true
+blocks:
+  - name: storage_image_reference
+    attributes:
+      - name: publisher
+        value: '"Canonical"'
+      - name: offer
+        value: '"0001-com-ubuntu-server-jammy"'
+      - name: sku
+        value: '"22_04-lts-gen2"'
+      - name: version
+        value: '"latest"'

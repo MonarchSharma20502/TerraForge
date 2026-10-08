@@ -1,0 +1,23 @@
+kind: automation_schedule
+azureType: azurerm_automation_schedule
+abbr: aasc
+module: Modules/Automation/automationSchedule
+stack: Automation
+category: Compute
+icon: automation-schedule
+required: [name, automation_account_name, frequency]
+optional:
+  - name: interval
+    type: number
+    default: "1"
+    description: Interval of the schedule frequency.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Schedule tags merged with the stack tags.
+args: {}
+sockets:
+  - name: automation_account_name
+    kind: automation_account
+    required: true
+blocks: []

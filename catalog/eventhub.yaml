@@ -1,0 +1,19 @@
+kind: eventhub
+azureType: azurerm_eventhub
+abbr: ehd
+module: Modules/Data/eventhub
+stack: Data
+category: Data
+icon: eventhub
+required: [name, namespace_id, partition_count]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Event Hub tags merged with the stack tags.
+args: {}
+sockets:
+  - name: namespace_id
+    kind: eventhub_namespace
+    required: true
+blocks: []

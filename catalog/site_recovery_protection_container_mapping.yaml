@@ -1,0 +1,18 @@
+kind: site_recovery_protection_container_mapping
+azureType: azurerm_site_recovery_protection_container_mapping
+abbr: asrpcm
+module: Modules/Security/siteRecoveryProtectionContainerMapping
+stack: Core
+category: Security
+icon: site-recovery
+required: [name, recovery_vault_name, recovery_fabric_name, recovery_source_protection_container_name, recovery_target_protection_container_id, recovery_replication_policy_id]
+optional: []
+args: {}
+sockets:
+  - name: recovery_vault_name
+    kind: recovery_services_vault
+    required: true
+  - name: recovery_replication_policy_id
+    kind: site_recovery_replication_policy
+    required: true
+blocks: []

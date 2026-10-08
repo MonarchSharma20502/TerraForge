@@ -1,0 +1,19 @@
+kind: service_bus_subscription
+azureType: azurerm_servicebus_subscription
+abbr: sbs
+module: Modules/Data/servicebusSubscription
+stack: Data
+category: Data
+icon: servicebus-subscription
+required: [name, topic_id, max_delivery_count]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Service Bus subscription tags merged with the stack tags.
+args: {}
+sockets:
+  - name: topic_id
+    kind: servicebus_topic
+    required: true
+blocks: []

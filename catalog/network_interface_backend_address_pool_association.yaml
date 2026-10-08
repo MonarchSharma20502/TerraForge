@@ -1,0 +1,18 @@
+kind: network_interface_backend_address_pool_association
+azureType: azurerm_network_interface_backend_address_pool_association
+abbr: nibapa
+module: Modules/Network/networkInterfaceBackendAddressPoolAssociation
+stack: Network
+category: Network
+noName: true
+required: [network_interface_id, ip_configuration_name, backend_address_pool_id]
+optional: []
+args: {}
+sockets:
+  - name: network_interface_id
+    kind: network_interface
+    required: true
+  - name: backend_address_pool_id
+    kind: lb_backend_address_pool
+    required: true
+blocks: []

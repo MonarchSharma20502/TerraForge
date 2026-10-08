@@ -1,0 +1,19 @@
+kind: palo_alto_local_rulestack_rule
+azureType: azurerm_palo_alto_local_rulestack_rule
+abbr: palor
+module: Modules/Network/paloAltoLocalRulestackRule
+stack: Network
+category: Network
+icon: palo-alto-local-rulestack
+required: [name, rulestack_id, priority, action, applications]
+optional:
+  - name: description
+    type: string
+    default: '""'
+    description: Description of the rulestack rule.
+args: {}
+sockets:
+  - name: rulestack_id
+    kind: palo_alto_local_rulestack
+    required: true
+blocks: []

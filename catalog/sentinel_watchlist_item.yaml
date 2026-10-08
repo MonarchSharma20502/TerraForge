@@ -1,0 +1,15 @@
+kind: sentinel_watchlist_item
+azureType: azurerm_sentinel_watchlist_item
+abbr: swli
+module: Modules/Governance/sentinelWatchlistItem
+stack: Governance
+category: Governance
+icon: sentinel-watchlist
+required: [watchlist_id, properties]
+optional: []
+args: {}
+sockets:
+  - name: watchlist_id
+    kind: sentinel_watchlist
+    required: true
+blocks: []

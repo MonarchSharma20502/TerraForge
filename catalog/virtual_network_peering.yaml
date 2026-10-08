@@ -1,0 +1,26 @@
+kind: virtual_network_peering
+azureType: azurerm_virtual_network_peering
+abbr: vnp
+module: Modules/Network/virtualNetworkPeering
+stack: Network
+category: Network
+icon: virtual-network-peering
+required: [name, virtual_network_name, remote_virtual_network_id]
+optional:
+  - name: allow_virtual_network_access
+    type: bool
+    default: "true"
+    description: Whether the peered networks can reach each other.
+  - name: allow_forwarded_traffic
+    type: bool
+    default: "false"
+    description: Whether forwarded traffic is allowed across the peering.
+args: {}
+sockets:
+  - name: virtual_network_name
+    kind: vnet
+    required: true
+  - name: remote_virtual_network_id
+    kind: vnet
+    required: true
+blocks: []

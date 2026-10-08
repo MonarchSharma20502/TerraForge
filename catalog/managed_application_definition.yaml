@@ -1,0 +1,24 @@
+kind: managed_application_definition
+azureType: azurerm_managed_application_definition
+abbr: mad
+module: Modules/Governance/managedApplicationDefinition
+stack: Governance
+category: Governance
+icon: managed-application-definition
+required: [name, rgName, location, lock_level, display_name]
+optional:
+  - name: description
+    type: string
+    default: '""'
+    description: Description of the managed application definition.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Definition tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

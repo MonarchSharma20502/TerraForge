@@ -1,0 +1,23 @@
+kind: windows_web_app
+azureType: azurerm_windows_web_app
+abbr: appw
+module: Modules/Compute/windowsWebApp
+stack: Compute
+category: Compute
+icon: windows-web-app
+required: [name, rgName, location, service_plan_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Web app tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: service_plan_id
+    kind: app_service_plan
+    required: true
+blocks: []

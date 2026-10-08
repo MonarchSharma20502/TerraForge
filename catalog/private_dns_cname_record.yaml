@@ -1,0 +1,19 @@
+kind: private_dns_cname_record
+azureType: azurerm_private_dns_cname_record
+abbr: pdzcname
+module: Modules/Network/privateDnsCnameRecord
+stack: Network
+category: Network
+icon: private-dns-zone
+required: [name, private_dns_zone_id, ttl, record]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: CNAME record tags merged with the stack tags.
+args: {}
+sockets:
+  - name: private_dns_zone_id
+    kind: private_dns_zone
+    required: true
+blocks: []

@@ -1,0 +1,20 @@
+kind: iothub_dps
+azureType: azurerm_iothub_dps
+abbr: iotdps
+module: Modules/Data/iothubDps
+stack: Data
+category: Data
+icon: iothub-dps
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Device provisioning service tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

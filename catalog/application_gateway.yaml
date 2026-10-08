@@ -1,0 +1,24 @@
+kind: application_gateway
+azureType: azurerm_application_gateway
+abbr: agw
+module: Modules/Network/applicationGateway
+stack: Network
+category: Network
+icon: application-gateway
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Application gateway tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: frontend_ip_configuration
+    attributes:
+      - name: name
+        value: '"frontend"'

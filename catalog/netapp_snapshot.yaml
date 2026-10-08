@@ -1,0 +1,21 @@
+kind: netapp_snapshot
+azureType: azurerm_netapp_snapshot
+abbr: anfs
+module: Modules/Data/netappSnapshot
+stack: Data
+category: Data
+icon: netapp-snapshot
+required: [name, account_name, pool_name, volume_name, location]
+optional: []
+args: {}
+sockets:
+  - name: account_name
+    kind: netapp_account
+    required: true
+  - name: pool_name
+    kind: netapp_pool
+    required: true
+  - name: volume_name
+    kind: netapp_volume
+    required: true
+blocks: []

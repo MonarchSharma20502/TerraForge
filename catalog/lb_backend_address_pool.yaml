@@ -1,0 +1,19 @@
+kind: lb_backend_address_pool
+azureType: azurerm_lb_backend_address_pool
+abbr: lbbap
+module: Modules/Network/lbBackendAddressPool
+stack: Network
+category: Network
+icon: load-balancer
+required: [name, loadbalancer_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Backend address pool tags merged with the stack tags.
+args: {}
+sockets:
+  - name: loadbalancer_id
+    kind: load_balancer
+    required: true
+blocks: []

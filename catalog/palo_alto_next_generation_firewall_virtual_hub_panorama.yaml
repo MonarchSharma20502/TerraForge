@@ -1,0 +1,20 @@
+kind: palo_alto_next_generation_firewall_virtual_hub_panorama
+azureType: azurerm_palo_alto_next_generation_firewall_virtual_hub_panorama
+abbr: panhp
+module: Modules/Network/paloAltoNgfwVirtualHubPanorama
+stack: Network
+category: Network
+icon: palo-alto-ngfw
+required: [name, rgName, location, panorama_base64_config]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Firewall tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

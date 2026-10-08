@@ -1,0 +1,20 @@
+kind: proximity_placement_group
+azureType: azurerm_proximity_placement_group
+abbr: ppg
+module: Modules/Network/proximityPlacementGroup
+stack: Network
+category: Network
+icon: proximity-placement-group
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Proximity placement group tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

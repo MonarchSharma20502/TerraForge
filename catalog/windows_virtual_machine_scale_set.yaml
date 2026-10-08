@@ -1,0 +1,42 @@
+kind: windows_virtual_machine_scale_set
+azureType: azurerm_windows_virtual_machine_scale_set
+abbr: vmssw
+module: Modules/Compute/windowsVirtualMachineScaleSet
+stack: Compute
+category: Compute
+icon: windows-vm-scale-set
+required: [name, rgName, location, sku, admin_username, admin_password]
+optional:
+  - name: instances
+    type: number
+    default: "1"
+    description: Number of instances in the scale set.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Scale set tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+  adminUsername: admin_username
+  adminPassword: admin_password
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: os_disk
+    attributes:
+      - name: caching
+        value: '"ReadWrite"'
+      - name: storage_account_type
+        value: '"Premium_LRS"'
+  - name: source_image_reference
+    attributes:
+      - name: publisher
+        value: '"MicrosoftWindowsServer"'
+      - name: offer
+        value: '"WindowsServer"'
+      - name: sku
+        value: '"2022-datacenter-azure-edition"'
+      - name: version
+        value: '"latest"'

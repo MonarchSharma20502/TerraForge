@@ -1,0 +1,23 @@
+kind: mssql_virtual_machine
+azureType: azurerm_mssql_virtual_machine
+abbr: sqlvm
+module: Modules/Data/mssqlVirtualMachine
+stack: Data
+category: Data
+noName: true
+required: [virtual_machine_id]
+optional:
+  - name: sql_license_type
+    type: string
+    default: '"PAYG"'
+    description: License type of the SQL virtual machine.
+  - name: sql_offer
+    type: string
+    default: '"SQL2022-WS2022"'
+    description: Marketplace offer of the SQL virtual machine.
+args: {}
+sockets:
+  - name: virtual_machine_id
+    kind: virtual_machine
+    required: true
+blocks: []

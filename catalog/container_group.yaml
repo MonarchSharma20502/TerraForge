@@ -1,0 +1,20 @@
+kind: container_group
+azureType: azurerm_container_group
+abbr: aci
+module: Modules/Compute/containerGroup
+stack: Compute
+category: Compute
+icon: container-group
+required: [name, rgName, location, os_type]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Container group tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

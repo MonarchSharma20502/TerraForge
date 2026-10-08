@@ -1,0 +1,20 @@
+kind: traffic_manager_profile
+azureType: azurerm_traffic_manager_profile
+abbr: tm
+module: Modules/Network/trafficManagerProfile
+stack: Network
+category: Network
+icon: traffic-manager
+required: [name, rgName, traffic_routing_method]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Traffic manager profile tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

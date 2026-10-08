@@ -1,0 +1,20 @@
+kind: active_directory_domain_service
+azureType: azurerm_active_directory_domain_service
+abbr: aadds
+module: Modules/Compute/activeDirectoryDomainService
+stack: Compute
+category: Compute
+icon: active-directory-domain-service
+required: [name, rgName, location, domain_name, sku]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Domain service tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

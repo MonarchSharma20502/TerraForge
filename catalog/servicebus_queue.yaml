@@ -1,0 +1,19 @@
+kind: servicebus_queue
+azureType: azurerm_servicebus_queue
+abbr: sbq
+module: Modules/Data/servicebusQueue
+stack: Data
+category: Data
+icon: servicebus-queue
+required: [name, namespace_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Service Bus queue tags merged with the stack tags.
+args: {}
+sockets:
+  - name: namespace_id
+    kind: servicebus_namespace
+    required: true
+blocks: []

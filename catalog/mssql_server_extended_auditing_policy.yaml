@@ -1,0 +1,23 @@
+kind: mssql_server_extended_auditing_policy
+azureType: azurerm_mssql_server_extended_auditing_policy
+abbr: sqlaudit
+module: Modules/Data/mssqlServerExtendedAuditingPolicy
+stack: Data
+category: Data
+noName: true
+required: [server_id]
+optional:
+  - name: storage_endpoint
+    type: string
+    default: '""'
+    description: Blob storage endpoint holding the audit logs.
+  - name: retention_in_days
+    type: number
+    default: "30"
+    description: Retention of the audit logs in days.
+args: {}
+sockets:
+  - name: server_id
+    kind: mssql_server
+    required: true
+blocks: []

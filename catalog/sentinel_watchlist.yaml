@@ -1,0 +1,19 @@
+kind: sentinel_watchlist
+azureType: azurerm_sentinel_watchlist
+abbr: swl
+module: Modules/Governance/sentinelWatchlist
+stack: Governance
+category: Governance
+icon: sentinel-watchlist
+required: [name, display_name, item_search_key, log_analytics_workspace_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Watchlist tags merged with the stack tags.
+args: {}
+sockets:
+  - name: log_analytics_workspace_id
+    kind: log_analytics
+    required: true
+blocks: []

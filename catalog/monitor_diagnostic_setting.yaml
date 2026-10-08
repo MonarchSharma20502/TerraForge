@@ -1,0 +1,26 @@
+kind: monitor_diagnostic_setting
+azureType: azurerm_monitor_diagnostic_setting
+abbr: diag
+module: Modules/Monitoring/monitorDiagnosticSetting
+stack: Core
+category: Monitoring
+icon: monitor-diagnostic-setting
+required: [name, target_resource_id]
+optional:
+  - name: log_analytics_workspace_id
+    type: string
+    default: '""'
+    description: Log Analytics workspace the diagnostics are sent to.
+  - name: enabled_log
+    type: list(any)
+    default: "[]"
+    description: Logs enabled by the diagnostic setting.
+    moduleOnly: true
+args: {}
+sockets:
+  - name: target_resource_id
+    kind: storage_account
+    required: true
+blocks:
+  - name: enabled_log
+    forEach: var.enabled_log

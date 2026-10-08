@@ -1,0 +1,19 @@
+kind: dns_cname_record
+azureType: azurerm_dns_cname_record
+abbr: cnamerec
+module: Modules/Network/dnsCnameRecord
+stack: Network
+category: Network
+icon: dns-zone
+required: [name, zone_name, ttl, record]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: CNAME record tags merged with the stack tags.
+args: {}
+sockets:
+  - name: zone_name
+    kind: dns_zone
+    required: true
+blocks: []

@@ -1,0 +1,15 @@
+kind: mssql_firewall_rule
+azureType: azurerm_mssql_firewall_rule
+abbr: sqlfw
+module: Modules/Data/mssqlFirewallRule
+stack: Data
+category: Data
+icon: mssql-firewall-rule
+required: [name, server_id, start_ip_address, end_ip_address]
+optional: []
+args: {}
+sockets:
+  - name: server_id
+    kind: mssql_server
+    required: true
+blocks: []

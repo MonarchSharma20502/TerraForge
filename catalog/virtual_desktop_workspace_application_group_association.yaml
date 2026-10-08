@@ -1,0 +1,18 @@
+kind: virtual_desktop_workspace_application_group_association
+azureType: azurerm_virtual_desktop_workspace_application_group_association
+abbr: avdwaga
+module: Modules/Desktop/virtualDesktopWorkspaceApplicationGroupAssociation
+stack: Desktop
+category: Compute
+noName: true
+required: [workspace_id, application_group_id]
+optional: []
+args: {}
+sockets:
+  - name: workspace_id
+    kind: virtual_desktop_workspace
+    required: true
+  - name: application_group_id
+    kind: virtual_desktop_application_group
+    required: true
+blocks: []

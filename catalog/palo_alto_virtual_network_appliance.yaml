@@ -1,0 +1,19 @@
+kind: palo_alto_virtual_network_appliance
+azureType: azurerm_palo_alto_virtual_network_appliance
+abbr: panva
+module: Modules/Network/paloAltoVirtualNetworkAppliance
+stack: Network
+category: Network
+icon: palo-alto-ngfw
+required: [name, virtual_hub_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Virtual network appliance tags merged with the stack tags.
+args: {}
+sockets:
+  - name: virtual_hub_id
+    kind: virtual_hub
+    required: true
+blocks: []

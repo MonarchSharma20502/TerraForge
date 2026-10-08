@@ -1,0 +1,24 @@
+kind: hdinsight_hadoop_cluster
+azureType: azurerm_hdinsight_hadoop_cluster
+abbr: hdi
+module: Modules/Data/hdinsightHadoopCluster
+stack: Data
+category: Data
+icon: hdinsight-cluster
+required: [name, rgName, location, cluster_version, tier, tls_min_version]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: HDInsight cluster tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: component_version
+    attributes:
+      - name: hadoop
+        value: '"3.6"'

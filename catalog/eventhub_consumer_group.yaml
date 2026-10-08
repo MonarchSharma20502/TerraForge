@@ -1,0 +1,18 @@
+kind: eventhub_consumer_group
+azureType: azurerm_eventhub_consumer_group
+abbr: ehcg
+module: Modules/Data/eventhubConsumerGroup
+stack: Data
+category: Data
+icon: eventhub
+required: [name, namespace_name, eventhub_name]
+optional: []
+args: {}
+sockets:
+  - name: namespace_name
+    kind: eventhub_namespace
+    required: true
+  - name: eventhub_name
+    kind: eventhub
+    required: true
+blocks: []

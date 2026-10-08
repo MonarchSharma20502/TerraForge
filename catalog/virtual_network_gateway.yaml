@@ -1,0 +1,26 @@
+kind: virtual_network_gateway
+azureType: azurerm_virtual_network_gateway
+abbr: vgw
+module: Modules/Network/virtualNetworkGateway
+stack: Network
+category: Network
+icon: virtual-network-gateway
+required: [name, rgName, location, type, sku]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Virtual network gateway tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: ip_configuration
+    attributes:
+      - name: name
+        value: '"ipconfig"'
+      - name: private_ip_address_allocation
+        value: '"Dynamic"'

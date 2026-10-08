@@ -1,0 +1,19 @@
+kind: cdn_frontdoor_custom_domain
+azureType: azurerm_cdn_frontdoor_custom_domain
+abbr: afdcd
+module: Modules/Network/cdnFrontdoorCustomDomain
+stack: Network
+category: Network
+icon: cdn-frontdoor-custom-domain
+required: [name, cdn_frontdoor_profile_id, host_name]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Custom domain tags merged with the stack tags.
+args: {}
+sockets:
+  - name: cdn_frontdoor_profile_id
+    kind: cdn_frontdoor_profile
+    required: true
+blocks: []

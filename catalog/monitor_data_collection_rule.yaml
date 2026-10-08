@@ -1,0 +1,20 @@
+kind: monitor_data_collection_rule
+azureType: azurerm_monitor_data_collection_rule
+abbr: dcr
+module: Modules/Monitoring/monitorDataCollectionRule
+stack: Core
+category: Monitoring
+icon: monitor-data-collection-rule
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Data collection rule tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

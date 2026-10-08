@@ -1,0 +1,19 @@
+kind: cdn_frontdoor_origin_group
+azureType: azurerm_cdn_frontdoor_origin_group
+abbr: afdog
+module: Modules/Network/cdnFrontdoorOriginGroup
+stack: Network
+category: Network
+icon: cdn-frontdoor-origin-group
+required: [name, cdn_frontdoor_profile_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Front Door origin group tags merged with the stack tags.
+args: {}
+sockets:
+  - name: cdn_frontdoor_profile_id
+    kind: cdn_frontdoor_profile
+    required: true
+blocks: []

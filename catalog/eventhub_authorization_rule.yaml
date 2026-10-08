@@ -1,0 +1,30 @@
+kind: eventhub_authorization_rule
+azureType: azurerm_eventhub_authorization_rule
+abbr: ehar
+module: Modules/Data/eventhubAuthorizationRule
+stack: Data
+category: Data
+icon: eventhub
+required: [name, namespace_name, eventhub_name]
+optional:
+  - name: listen
+    type: bool
+    default: "true"
+    description: Whether the rule grants listen.
+  - name: send
+    type: bool
+    default: "false"
+    description: Whether the rule grants send.
+  - name: manage
+    type: bool
+    default: "false"
+    description: Whether the rule grants manage.
+args: {}
+sockets:
+  - name: namespace_name
+    kind: eventhub_namespace
+    required: true
+  - name: eventhub_name
+    kind: eventhub
+    required: true
+blocks: []

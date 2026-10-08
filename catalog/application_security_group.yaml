@@ -1,0 +1,20 @@
+kind: application_security_group
+azureType: azurerm_application_security_group
+abbr: asg
+module: Modules/Network/applicationSecurityGroup
+stack: Network
+category: Network
+icon: application-security-group
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Application security group tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

@@ -1,0 +1,20 @@
+kind: recovery_services_vault
+azureType: azurerm_recovery_services_vault
+abbr: rsv
+module: Modules/Security/recoveryServicesVault
+stack: Core
+category: Security
+icon: recovery-services-vault
+required: [name, rgName, location, sku]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Recovery services vault tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

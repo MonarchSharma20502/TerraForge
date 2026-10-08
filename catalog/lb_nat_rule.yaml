@@ -1,0 +1,19 @@
+kind: lb_nat_rule
+azureType: azurerm_lb_nat_rule
+abbr: lbnr
+module: Modules/Network/lbNatRule
+stack: Network
+category: Network
+icon: load-balancer
+required: [name, loadbalancer_id, protocol, backend_port, frontend_ip_configuration_name]
+optional:
+  - name: frontend_port
+    type: number
+    default: "50001"
+    description: Frontend port of the NAT rule.
+args: {}
+sockets:
+  - name: loadbalancer_id
+    kind: load_balancer
+    required: true
+blocks: []

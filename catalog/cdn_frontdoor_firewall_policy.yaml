@@ -1,0 +1,20 @@
+kind: cdn_frontdoor_firewall_policy
+azureType: azurerm_cdn_frontdoor_firewall_policy
+abbr: afdwaf
+module: Modules/Network/cdnFrontdoorFirewallPolicy
+stack: Network
+category: Network
+icon: cdn-frontdoor-firewall-policy
+required: [name, rgName, sku_name, mode]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Front Door firewall policy tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

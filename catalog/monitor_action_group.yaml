@@ -1,0 +1,20 @@
+kind: monitor_action_group
+azureType: azurerm_monitor_action_group
+abbr: ag
+module: Modules/Monitoring/monitorActionGroup
+stack: Core
+category: Monitoring
+icon: monitor-action-group
+required: [name, rgName, short_name]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Action group tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

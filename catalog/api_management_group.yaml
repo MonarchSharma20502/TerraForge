@@ -1,0 +1,19 @@
+kind: api_management_group
+azureType: azurerm_api_management_group
+abbr: apimg
+module: Modules/Integration/apiManagementGroup
+stack: Integration
+category: Compute
+icon: api-management
+required: [name, api_management_name, display_name]
+optional:
+  - name: description
+    type: string
+    default: '""'
+    description: Description of the API Management group.
+args: {}
+sockets:
+  - name: api_management_name
+    kind: api_management
+    required: true
+blocks: []

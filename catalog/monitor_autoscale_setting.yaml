@@ -1,0 +1,33 @@
+kind: monitor_autoscale_setting
+azureType: azurerm_monitor_autoscale_setting
+abbr: mas
+module: Modules/Monitoring/monitorAutoscaleSetting
+stack: Core
+category: Monitoring
+icon: monitor-autoscale-setting
+required: [name, rgName, location, target_resource_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Autoscale setting tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: profile
+    attributes:
+      - name: name
+        value: '"default"'
+    blocks:
+      - name: capacity
+        attributes:
+          - name: default
+            value: "1"
+          - name: minimum
+            value: "1"
+          - name: maximum
+            value: "3"

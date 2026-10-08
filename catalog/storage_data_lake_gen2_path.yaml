@@ -1,0 +1,18 @@
+kind: storage_data_lake_gen2_path
+azureType: azurerm_storage_data_lake_gen2_path
+abbr: adlsp
+module: Modules/Data/storageDataLakeGen2Path
+stack: Data
+category: Data
+noName: true
+required: [path, filesystem_name, resource, storage_account_id]
+optional: []
+args: {}
+sockets:
+  - name: storage_account_id
+    kind: storage_account
+    required: true
+  - name: filesystem_name
+    kind: storage_data_lake_gen2_filesystem
+    required: true
+blocks: []

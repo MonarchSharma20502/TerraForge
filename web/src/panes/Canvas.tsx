@@ -163,6 +163,8 @@ export function Canvas({
           onDrop={handleDrop}
           onDragOver={handleDragOver}
           fitView
+          minZoom={0.8}
+          fitViewOptions={{ padding: 0.16, maxZoom: 1 }}
           nodesDraggable
           proOptions={{ hideAttribution: true }}
         >

@@ -1,0 +1,19 @@
+kind: lb_probe
+azureType: azurerm_lb_probe
+abbr: lbp
+module: Modules/Network/lbProbe
+stack: Network
+category: Network
+icon: load-balancer
+required: [name, loadbalancer_id, port]
+optional:
+  - name: protocol
+    type: string
+    default: '"Tcp"'
+    description: Protocol of the load balancer probe.
+args: {}
+sockets:
+  - name: loadbalancer_id
+    kind: load_balancer
+    required: true
+blocks: []

@@ -1,0 +1,19 @@
+kind: backup_protected_vm
+azureType: azurerm_backup_protected_vm
+abbr: bpvm
+module: Modules/Security/backupProtectedVm
+stack: Core
+category: Security
+noName: true
+required: [recovery_vault_name, source_vm_id]
+optional:
+  - name: backup_policy_name
+    type: string
+    default: '""'
+    description: Backup policy protecting the virtual machine.
+args: {}
+sockets:
+  - name: recovery_vault_name
+    kind: recovery_services_vault
+    required: true
+blocks: []

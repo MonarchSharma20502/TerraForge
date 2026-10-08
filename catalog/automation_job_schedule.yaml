@@ -1,0 +1,21 @@
+kind: automation_job_schedule
+azureType: azurerm_automation_job_schedule
+abbr: aajs
+module: Modules/Automation/automationJobSchedule
+stack: Automation
+category: Compute
+noName: true
+required: [automation_account_name, runbook_name, schedule_name]
+optional: []
+args: {}
+sockets:
+  - name: automation_account_name
+    kind: automation_account
+    required: true
+  - name: runbook_name
+    kind: automation_runbook
+    required: true
+  - name: schedule_name
+    kind: automation_schedule
+    required: true
+blocks: []

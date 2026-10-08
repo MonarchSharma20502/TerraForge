@@ -1,0 +1,24 @@
+kind: eventhub_namespace
+azureType: azurerm_eventhub_namespace
+abbr: eh
+module: Modules/Data/eventhubNamespace
+stack: Data
+category: Data
+icon: eventhub-namespace
+required: [name, rgName, location, sku]
+optional:
+  - name: capacity
+    type: number
+    default: "1"
+    description: Throughput units of the Event Hub namespace.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Event Hub namespace tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

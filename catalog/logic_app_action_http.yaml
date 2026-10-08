@@ -1,0 +1,19 @@
+kind: logic_app_action_http
+azureType: azurerm_logic_app_action_http
+abbr: lah
+module: Modules/Data/logicAppActionHttp
+stack: Data
+category: Data
+icon: logic-app
+required: [name, logic_app_id, method, uri]
+optional:
+  - name: body
+    type: string
+    default: '""'
+    description: Body of the HTTP action.
+args: {}
+sockets:
+  - name: logic_app_id
+    kind: logic_app_workflow
+    required: true
+blocks: []

@@ -1,0 +1,22 @@
+kind: private_dns_zone_virtual_network_link
+azureType: azurerm_private_dns_zone_virtual_network_link
+abbr: pdzvl
+module: Modules/Network/privateDnsZoneVirtualNetworkLink
+stack: Network
+category: Network
+icon: private-dns-zone
+required: [name, private_dns_zone_id, virtual_network_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Virtual network link tags merged with the stack tags.
+args: {}
+sockets:
+  - name: private_dns_zone_id
+    kind: private_dns_zone
+    required: true
+  - name: virtual_network_id
+    kind: vnet
+    required: true
+blocks: []

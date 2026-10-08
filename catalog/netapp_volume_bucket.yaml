@@ -1,0 +1,19 @@
+kind: netapp_volume_bucket
+azureType: azurerm_netapp_volume_bucket
+abbr: anfvb
+module: Modules/Data/netappVolumeBucket
+stack: Data
+category: Data
+icon: netapp-volume
+required: [name, volume_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Volume bucket tags merged with the stack tags.
+args: {}
+sockets:
+  - name: volume_id
+    kind: netapp_volume
+    required: true
+blocks: []

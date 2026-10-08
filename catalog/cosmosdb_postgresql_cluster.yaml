@@ -1,0 +1,24 @@
+kind: cosmosdb_postgresql_cluster
+azureType: azurerm_cosmosdb_postgresql_cluster
+abbr: cpg
+module: Modules/Data/cosmosdbPostgresqlCluster
+stack: Data
+category: Data
+icon: cosmosdb-postgresql-cluster
+required: [name, rgName, location, node_count]
+optional:
+  - name: node_vcores
+    type: number
+    default: "4"
+    description: Vcores per node of the cluster.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Cluster tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

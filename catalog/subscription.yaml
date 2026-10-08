@@ -1,0 +1,16 @@
+kind: subscription
+azureType: azurerm_subscription
+abbr: sub
+module: Modules/Governance/subscription
+stack: Governance
+category: Governance
+noName: true
+required: [subscription_name]
+optional:
+  - name: alias
+    type: string
+    default: '""'
+    description: Alias of the subscription.
+args: {}
+sockets: []
+blocks: []

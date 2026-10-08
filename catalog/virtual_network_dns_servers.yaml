@@ -1,0 +1,19 @@
+kind: virtual_network_dns_servers
+azureType: azurerm_virtual_network_dns_servers
+abbr: vnds
+module: Modules/Network/virtualNetworkDnsServers
+stack: Network
+category: Network
+noName: true
+required: [virtual_network_id]
+optional:
+  - name: dns_servers
+    type: list(string)
+    default: '["168.63.129.16"]'
+    description: Custom DNS servers of the virtual network.
+args: {}
+sockets:
+  - name: virtual_network_id
+    kind: vnet
+    required: true
+blocks: []

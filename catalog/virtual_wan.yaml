@@ -1,0 +1,20 @@
+kind: virtual_wan
+azureType: azurerm_virtual_wan
+abbr: vwan
+module: Modules/Network/virtualWan
+stack: Network
+category: Network
+icon: virtual-wan
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Virtual WAN tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

@@ -1,0 +1,20 @@
+kind: availability_set
+azureType: azurerm_availability_set
+abbr: avset
+module: Modules/Compute/availabilitySet
+stack: Compute
+category: Compute
+icon: availability-set
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Availability set tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

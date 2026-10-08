@@ -1,0 +1,20 @@
+kind: netapp_account
+azureType: azurerm_netapp_account
+abbr: anf
+module: Modules/Data/netappAccount
+stack: Data
+category: Data
+icon: netapp-account
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: NetApp account tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

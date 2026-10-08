@@ -1,0 +1,20 @@
+kind: bot_channels_registration
+azureType: azurerm_bot_channels_registration
+abbr: bot
+module: Modules/Integration/botChannelsRegistration
+stack: Integration
+category: Compute
+icon: bot
+required: [name, rgName, location, sku, microsoft_app_id, microsoft_app_type]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Bot registration tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

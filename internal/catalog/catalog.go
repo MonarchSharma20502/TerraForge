@@ -28,6 +28,12 @@ type Entry struct {
 	// Icon is the diagram glyph for this kind.
 	Icon string `yaml:"icon"`
 
+	// NoName marks a kind whose azurerm type has no name attribute: the
+	// association and policy resources that are identified by their parent
+	// reference instead. The module omits the name variable and the resource
+	// attribute, and the caller does not pass a name.
+	NoName bool `yaml:"noName,omitempty"`
+
 	// StrictName holds the Azure name constraints when the resource does not
 	// accept the standard dashed name. Strict-name resources get a separate
 	// name_configs entry with replace(..., "-", "").

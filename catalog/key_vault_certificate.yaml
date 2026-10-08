@@ -1,0 +1,40 @@
+kind: key_vault_certificate
+azureType: azurerm_key_vault_certificate
+abbr: kvc
+module: Modules/Security/keyVaultCertificate
+stack: Core
+category: Security
+icon: key-vault-certificate
+required: [name, key_vault_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Key vault certificate tags merged with the stack tags.
+args: {}
+sockets:
+  - name: key_vault_id
+    kind: key_vault
+    required: true
+blocks:
+  - name: certificate_policy
+    blocks:
+      - name: issuer_parameters
+        attributes:
+          - name: name
+            value: '"Self"'
+      - name: key_properties
+        attributes:
+          - name: exportable
+            value: "true"
+          - name: key_size
+            value: "2048"
+          - name: key_type
+            value: '"RSA"'
+          - name: reuse_key
+            value: "true"
+      - name: secret_properties
+        attributes:
+          - name: content_type
+            value: '"application/x-pkcs12"'
+

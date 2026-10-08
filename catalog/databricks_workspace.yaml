@@ -1,0 +1,20 @@
+kind: databricks_workspace
+azureType: azurerm_databricks_workspace
+abbr: dbw
+module: Modules/Data/databricksWorkspace
+stack: Data
+category: Data
+icon: databricks-workspace
+required: [name, rgName, location, sku]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Databricks workspace tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

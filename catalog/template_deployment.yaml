@@ -1,0 +1,20 @@
+kind: template_deployment
+azureType: azurerm_template_deployment
+abbr: arm
+module: Modules/Governance/templateDeployment
+stack: Governance
+category: Governance
+icon: template-deployment
+required: [name, rgName, deployment_mode, template_body]
+optional:
+  - name: parameters_body
+    type: string
+    default: '"{}"'
+    description: Parameters body of the template deployment.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

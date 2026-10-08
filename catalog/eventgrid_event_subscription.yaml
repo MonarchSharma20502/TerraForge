@@ -1,0 +1,16 @@
+kind: eventgrid_event_subscription
+azureType: azurerm_eventgrid_event_subscription
+abbr: eg
+module: Modules/Integration/eventgridEventSubscription
+stack: Integration
+category: Compute
+icon: eventgrid
+required: [name, scope]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Event subscription tags merged with the stack tags.
+args: {}
+sockets: []
+blocks: []

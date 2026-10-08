@@ -1,0 +1,18 @@
+kind: cdn_frontdoor_custom_domain_association
+azureType: azurerm_cdn_frontdoor_custom_domain_association
+abbr: afdcda
+module: Modules/Network/cdnFrontdoorCustomDomainAssociation
+stack: Network
+category: Network
+noName: true
+required: [cdn_frontdoor_custom_domain_id, cdn_frontdoor_route_ids]
+optional: []
+args: {}
+sockets:
+  - name: cdn_frontdoor_custom_domain_id
+    kind: cdn_frontdoor_custom_domain
+    required: true
+  - name: cdn_frontdoor_route_ids
+    kind: cdn_frontdoor_route
+    required: true
+blocks: []

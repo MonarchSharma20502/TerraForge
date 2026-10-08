@@ -1,0 +1,15 @@
+kind: data_lake_analytics_firewall_rule
+azureType: azurerm_data_lake_analytics_firewall_rule
+abbr: dlafw
+module: Modules/Data/dataLakeAnalyticsFirewallRule
+stack: Data
+category: Data
+icon: data-lake-analytics
+required: [name, account_name, start_ip_address, end_ip_address]
+optional: []
+args: {}
+sockets:
+  - name: account_name
+    kind: data_lake_analytics_account
+    required: true
+blocks: []

@@ -1,0 +1,27 @@
+kind: kubernetes_cluster_node_pool
+azureType: azurerm_kubernetes_cluster_node_pool
+abbr: akspool
+module: Modules/Compute/kubernetesClusterNodePool
+stack: Compute
+category: Compute
+icon: kubernetes-node-pool
+required: [name, kubernetes_cluster_id]
+optional:
+  - name: vm_size
+    type: string
+    default: '"Standard_D2_v2"'
+    description: VM size of the node pool.
+  - name: node_count
+    type: number
+    default: "1"
+    description: Number of nodes in the node pool.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Node pool tags merged with the stack tags.
+args: {}
+sockets:
+  - name: kubernetes_cluster_id
+    kind: kubernetes_cluster
+    required: true
+blocks: []

@@ -42,7 +42,10 @@ export function toGraph(
   const nodes: Node[] = [];
   const edges: Edge[] = [];
 
-  // Stack columns so the three-tier layout reads left to right.
+  // Stack columns so the three-tier layout reads left to right. The pitch is
+  // the node width plus its gutter, so columns never overlap.
+  const NODE_W = 124;
+  const PITCH = 150;
   const stackX: Record<string, number> = {};
   const stackCounts: Record<string, number> = {};
 
@@ -50,7 +53,7 @@ export function toGraph(
     Object.entries(family).forEach(([id, props]) => {
       const entry = catalog.find((c) => c.kind === kind);
       const stack = (props.stack as string) || entry?.stack || "Core";
-      const column = stackX[stack] ?? Object.keys(stackX).length * 260;
+      const column = stackX[stack] ?? Object.keys(stackX).length * PITCH;
       const row = stackCounts[stack] ?? 0;
       stackCounts[stack] = row + 1;
       if (!(stack in stackX)) stackX[stack] = column;
@@ -59,7 +62,8 @@ export function toGraph(
       const pos = props._pos as { x: number; y: number } | undefined;
       nodes.push({
         id: `${kind}::${id}`,
-        position: pos ?? { x: column, y: row * 110 },
+        position: pos ?? { x: column, y: row * 96 },
+        width: NODE_W,
         data: {
           label: (
             <div className="canvas-node">
@@ -91,11 +95,11 @@ export function toGraph(
     const count = stackCounts[stack] ?? 0;
     nodes.push({
       id: `stack::${stack}`,
-      position: { x: stackX[stack] - 24, y: -56 },
+      position: { x: stackX[stack] - 18, y: -48 },
       // The container only has to be wide enough for its column and tall
       // enough for every node plus the label band.
-      width: 232,
-      height: count * 110 + 72,
+      width: NODE_W + 30,
+      height: count * 96 + 66,
       data: {
         label: (
           <div className="canvas-stack">

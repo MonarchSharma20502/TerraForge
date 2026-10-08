@@ -1,0 +1,38 @@
+kind: virtual_machine_scale_set
+azureType: azurerm_virtual_machine_scale_set
+abbr: vmsslegacy
+module: Modules/Compute/virtualMachineScaleSet
+stack: Compute
+category: Compute
+icon: virtual-machine-scale-set
+required: [name, rgName, location, upgrade_policy_mode]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Scale set tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: storage_profile_os_disk
+    attributes:
+      - name: caching
+        value: '"ReadWrite"'
+      - name: create_option
+        value: '"FromImage"'
+      - name: name
+        value: '"osdisk"'
+  - name: storage_profile_image_reference
+    attributes:
+      - name: publisher
+        value: '"Canonical"'
+      - name: offer
+        value: '"0001-com-ubuntu-server-jammy"'
+      - name: sku
+        value: '"22_04-lts-gen2"'
+      - name: version
+        value: '"latest"'

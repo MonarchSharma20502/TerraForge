@@ -1,0 +1,27 @@
+kind: mssql_managed_instance
+azureType: azurerm_mssql_managed_instance
+abbr: sqlmi
+module: Modules/Data/mssqlManagedInstance
+stack: Data
+category: Data
+icon: mssql-managed-instance
+required: [name, rgName, location, license_type, sku_name, storage_size_in_gb, vcores, subnet_id]
+optional:
+  - name: administrator_login
+    type: string
+    default: '"miadmin"'
+    description: Administrator login of the managed instance.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Managed instance tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: subnet_id
+    kind: subnet
+    required: true
+blocks: []

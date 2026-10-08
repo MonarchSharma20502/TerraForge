@@ -1,0 +1,19 @@
+kind: cdn_frontdoor_security_policy
+azureType: azurerm_cdn_frontdoor_security_policy
+abbr: afdsp
+module: Modules/Network/cdnFrontdoorSecurityPolicy
+stack: Network
+category: Network
+icon: cdn-frontdoor-security-policy
+required: [name, cdn_frontdoor_profile_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Security policy tags merged with the stack tags.
+args: {}
+sockets:
+  - name: cdn_frontdoor_profile_id
+    kind: cdn_frontdoor_profile
+    required: true
+blocks: []

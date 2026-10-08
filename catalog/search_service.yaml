@@ -1,0 +1,34 @@
+kind: search_service
+azureType: azurerm_search_service
+abbr: srch
+module: Modules/Data/searchService
+stack: Data
+category: Data
+icon: search-service
+required: [name, rgName, location, sku]
+optional:
+  - name: partition_count
+    type: number
+    default: "1"
+    description: Partition count of the search service.
+  - name: replica_count
+    type: number
+    default: "1"
+    description: Replica count of the search service.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Search service tags merged with the stack tags.
+strictName:
+  min: 2
+  max: 60
+  lowercase: true
+  alnumOnly: false
+  stripDashes: false
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

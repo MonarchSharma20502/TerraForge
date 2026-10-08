@@ -1,0 +1,21 @@
+kind: api_management_product_api
+azureType: azurerm_api_management_product_api
+abbr: apimpa
+module: Modules/Integration/apiManagementProductApi
+stack: Integration
+category: Compute
+noName: true
+required: [api_name, product_id, api_management_name]
+optional: []
+args: {}
+sockets:
+  - name: api_management_name
+    kind: api_management
+    required: true
+  - name: api_name
+    kind: api_management_api
+    required: true
+  - name: product_id
+    kind: api_management_product
+    required: true
+blocks: []

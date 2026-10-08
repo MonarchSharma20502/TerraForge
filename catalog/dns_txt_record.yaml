@@ -1,0 +1,23 @@
+kind: dns_txt_record
+azureType: azurerm_dns_txt_record
+abbr: txtrec
+module: Modules/Network/dnsTxtRecord
+stack: Network
+category: Network
+icon: dns-zone
+required: [name, zone_name, ttl]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: TXT record tags merged with the stack tags.
+args: {}
+sockets:
+  - name: zone_name
+    kind: dns_zone
+    required: true
+blocks:
+  - name: record
+    attributes:
+      - name: value
+        value: '"v=spf1 include:spf.protection.outlook.com -all"'

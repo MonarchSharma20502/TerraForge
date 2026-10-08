@@ -1,0 +1,24 @@
+kind: public_ip_prefix
+azureType: azurerm_public_ip_prefix
+abbr: ippfx
+module: Modules/Network/publicIpPrefix
+stack: Network
+category: Network
+icon: public-ip-prefix
+required: [name, rgName, location]
+optional:
+  - name: prefix_length
+    type: number
+    default: "28"
+    description: Length of the public IP prefix.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Public IP prefix tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

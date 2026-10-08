@@ -1,0 +1,19 @@
+kind: storage_share
+azureType: azurerm_storage_share
+abbr: sts
+module: Modules/Data/storageShare
+stack: Data
+category: Data
+icon: storage-share
+required: [name, storage_account_id, quota]
+optional:
+  - name: enabled_protocol
+    type: string
+    default: '"SMB"'
+    description: Protocol of the file share.
+args: {}
+sockets:
+  - name: storage_account_id
+    kind: storage_account
+    required: true
+blocks: []

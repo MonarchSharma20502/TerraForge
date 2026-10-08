@@ -1,0 +1,23 @@
+kind: cdn_frontdoor_origin
+azureType: azurerm_cdn_frontdoor_origin
+abbr: afdo
+module: Modules/Network/cdnFrontdoorOrigin
+stack: Network
+category: Network
+icon: cdn-frontdoor-origin
+required: [name, cdn_frontdoor_origin_group_id, host_name]
+optional:
+  - name: certificate_name_check_enabled
+    type: bool
+    default: "true"
+    description: Whether certificate name check is enabled on the origin.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Front Door origin tags merged with the stack tags.
+args: {}
+sockets:
+  - name: cdn_frontdoor_origin_group_id
+    kind: cdn_frontdoor_origin_group
+    required: true
+blocks: []

@@ -1,0 +1,20 @@
+kind: palo_alto_local_rulestack
+azureType: azurerm_palo_alto_local_rulestack
+abbr: palo
+module: Modules/Network/paloAltoLocalRulestack
+stack: Network
+category: Network
+icon: palo-alto-local-rulestack
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Rulestack tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

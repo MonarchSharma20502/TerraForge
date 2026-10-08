@@ -1,0 +1,18 @@
+kind: subnet_nat_gateway_association
+azureType: azurerm_subnet_nat_gateway_association
+abbr: snga
+module: Modules/Network/subnetNatGatewayAssociation
+stack: Network
+category: Network
+noName: true
+required: [subnet_id, nat_gateway_id]
+optional: []
+args: {}
+sockets:
+  - name: subnet_id
+    kind: subnet
+    required: true
+  - name: nat_gateway_id
+    kind: nat_gateway
+    required: true
+blocks: []

@@ -1,0 +1,20 @@
+kind: app_service_certificate_order
+azureType: azurerm_app_service_certificate_order
+abbr: asco
+module: Modules/Compute/appServiceCertificateOrder
+stack: Compute
+category: Compute
+icon: app-service-certificate
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Certificate order tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

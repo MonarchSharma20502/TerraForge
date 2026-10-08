@@ -1,0 +1,19 @@
+kind: cdn_frontdoor_endpoint
+azureType: azurerm_cdn_frontdoor_endpoint
+abbr: afde
+module: Modules/Network/cdnFrontdoorEndpoint
+stack: Network
+category: Network
+icon: cdn-frontdoor-endpoint
+required: [name, cdn_frontdoor_profile_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Front Door endpoint tags merged with the stack tags.
+args: {}
+sockets:
+  - name: cdn_frontdoor_profile_id
+    kind: cdn_frontdoor_profile
+    required: true
+blocks: []

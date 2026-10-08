@@ -1,0 +1,19 @@
+kind: storage_blob
+azureType: azurerm_storage_blob
+abbr: stb
+module: Modules/Data/storageBlob
+stack: Data
+category: Data
+icon: storage-blob
+required: [name, storage_container_id, type]
+optional:
+  - name: source_content
+    type: string
+    default: '""'
+    description: Content of the storage blob.
+args: {}
+sockets:
+  - name: storage_container_id
+    kind: storage_container
+    required: true
+blocks: []

@@ -1,0 +1,23 @@
+kind: key_vault_access_policy
+azureType: azurerm_key_vault_access_policy
+abbr: kvap
+module: Modules/Security/keyVaultAccessPolicy
+stack: Core
+category: Security
+noName: true
+required: [key_vault_id, object_id, tenant_id]
+optional:
+  - name: secret_permissions
+    type: list(string)
+    default: '["Get", "List"]'
+    description: Secret permissions of the access policy.
+  - name: key_permissions
+    type: list(string)
+    default: '["Get", "List"]'
+    description: Key permissions of the access policy.
+args: {}
+sockets:
+  - name: key_vault_id
+    kind: key_vault
+    required: true
+blocks: []

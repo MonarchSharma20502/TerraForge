@@ -1,0 +1,15 @@
+kind: netapp_account_encryption
+azureType: azurerm_netapp_account_encryption
+abbr: anfe
+module: Modules/Data/netappAccountEncryption
+stack: Data
+category: Data
+noName: true
+required: [netapp_account_id, encryption_key]
+optional: []
+args: {}
+sockets:
+  - name: netapp_account_id
+    kind: netapp_account
+    required: true
+blocks: []

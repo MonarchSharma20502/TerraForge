@@ -1,0 +1,21 @@
+kind: api_management_product_group
+azureType: azurerm_api_management_product_group
+abbr: apimpg
+module: Modules/Integration/apiManagementProductGroup
+stack: Integration
+category: Compute
+noName: true
+required: [group_name, product_id, api_management_name]
+optional: []
+args: {}
+sockets:
+  - name: api_management_name
+    kind: api_management
+    required: true
+  - name: group_name
+    kind: api_management_group
+    required: true
+  - name: product_id
+    kind: api_management_product
+    required: true
+blocks: []

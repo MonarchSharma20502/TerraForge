@@ -1,0 +1,20 @@
+kind: confidential_ledger
+azureType: azurerm_confidential_ledger
+abbr: cfl
+module: Modules/Data/confidentialLedger
+stack: Data
+category: Data
+icon: confidential-ledger
+required: [name, rgName, location, ledger_type]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Confidential ledger tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

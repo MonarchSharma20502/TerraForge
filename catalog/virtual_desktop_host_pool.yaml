@@ -1,0 +1,24 @@
+kind: virtual_desktop_host_pool
+azureType: azurerm_virtual_desktop_host_pool
+abbr: avdhp
+module: Modules/Desktop/virtualDesktopHostPool
+stack: Desktop
+category: Compute
+icon: virtual-desktop-host-pool
+required: [name, rgName, location, load_balancer_type, type]
+optional:
+  - name: validate_environment
+    type: bool
+    default: "false"
+    description: Whether the host pool validates the environment.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Host pool tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

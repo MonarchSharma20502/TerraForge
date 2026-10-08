@@ -1,0 +1,20 @@
+kind: firewall
+azureType: azurerm_firewall
+abbr: afw
+module: Modules/Network/firewall
+stack: Network
+category: Network
+icon: firewall
+required: [name, rgName, location, sku_name, sku_tier]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Firewall tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

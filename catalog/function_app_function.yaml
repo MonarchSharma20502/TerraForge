@@ -1,0 +1,15 @@
+kind: function_app_function
+azureType: azurerm_function_app_function
+abbr: faf
+module: Modules/Compute/functionAppFunction
+stack: Compute
+category: Compute
+icon: function-app
+required: [name, function_app_id, config_json]
+optional: []
+args: {}
+sockets:
+  - name: function_app_id
+    kind: linux_function_app
+    required: true
+blocks: []

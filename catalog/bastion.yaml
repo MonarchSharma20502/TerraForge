@@ -1,0 +1,24 @@
+kind: bastion
+azureType: azurerm_bastion_host
+abbr: bas
+module: Modules/Network/bastion
+stack: Network
+category: Network
+icon: bastion
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Bastion host tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: ip_configuration
+    attributes:
+      - name: name
+        value: '"ipconfig"'

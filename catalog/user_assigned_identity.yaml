@@ -1,0 +1,20 @@
+kind: user_assigned_identity
+azureType: azurerm_user_assigned_identity
+abbr: uai
+module: Modules/Security/userAssignedIdentity
+stack: Core
+category: Security
+icon: user-assigned-identity
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Managed identity tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

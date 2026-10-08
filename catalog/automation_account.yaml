@@ -1,0 +1,20 @@
+kind: automation_account
+azureType: azurerm_automation_account
+abbr: aa
+module: Modules/Automation/automationAccount
+stack: Automation
+category: Compute
+icon: automation-account
+required: [name, rgName, location, sku_name]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Automation account tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

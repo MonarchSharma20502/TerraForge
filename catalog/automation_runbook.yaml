@@ -1,0 +1,23 @@
+kind: automation_runbook
+azureType: azurerm_automation_runbook
+abbr: aarb
+module: Modules/Automation/automationRunbook
+stack: Automation
+category: Compute
+icon: automation-runbook
+required: [name, automation_account_name, location, runbook_type, log_progress, log_verbose]
+optional:
+  - name: description
+    type: string
+    default: '""'
+    description: Description of the runbook.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Runbook tags merged with the stack tags.
+args: {}
+sockets:
+  - name: automation_account_name
+    kind: automation_account
+    required: true
+blocks: []

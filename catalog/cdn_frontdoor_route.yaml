@@ -1,0 +1,22 @@
+kind: cdn_frontdoor_route
+azureType: azurerm_cdn_frontdoor_route
+abbr: afdr
+module: Modules/Network/cdnFrontdoorRoute
+stack: Network
+category: Network
+icon: cdn-frontdoor-route
+required: [name, cdn_frontdoor_endpoint_id, cdn_frontdoor_origin_group_id, patterns_to_match, supported_protocols]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Front Door route tags merged with the stack tags.
+args: {}
+sockets:
+  - name: cdn_frontdoor_endpoint_id
+    kind: cdn_frontdoor_endpoint
+    required: true
+  - name: cdn_frontdoor_origin_group_id
+    kind: cdn_frontdoor_origin_group
+    required: true
+blocks: []

@@ -1,0 +1,20 @@
+kind: nat_gateway
+azureType: azurerm_nat_gateway
+abbr: nat
+module: Modules/Network/natGateway
+stack: Network
+category: Network
+icon: nat-gateway
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: NAT gateway tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

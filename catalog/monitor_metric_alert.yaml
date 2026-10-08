@@ -1,0 +1,44 @@
+kind: monitor_metric_alert
+azureType: azurerm_monitor_metric_alert
+abbr: mal
+module: Modules/Monitoring/monitorMetricAlert
+stack: Core
+category: Monitoring
+icon: monitor-metric-alert
+required: [name, rgName, scopes]
+optional:
+  - name: severity
+    type: number
+    default: "3"
+    description: Severity of the metric alert.
+  - name: frequency
+    type: string
+    default: '"PT1M"'
+    description: Evaluation frequency of the metric alert.
+  - name: window_size
+    type: string
+    default: '"PT5M"'
+    description: Window size of the metric alert.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Metric alert tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks:
+  - name: criteria
+    attributes:
+      - name: metric_namespace
+        value: '"Microsoft.Compute/virtualMachines"'
+      - name: metric_name
+        value: '"Percentage CPU"'
+      - name: aggregation
+        value: '"Average"'
+      - name: operator
+        value: '"GreaterThan"'
+      - name: threshold
+        value: "80"

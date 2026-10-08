@@ -1,0 +1,18 @@
+kind: subnet_network_security_group_association
+azureType: azurerm_subnet_network_security_group_association
+abbr: snsga
+module: Modules/Network/subnetNsgAssociation
+stack: Network
+category: Network
+noName: true
+required: [subnet_id, network_security_group_id]
+optional: []
+args: {}
+sockets:
+  - name: subnet_id
+    kind: subnet
+    required: true
+  - name: network_security_group_id
+    kind: nsg
+    required: true
+blocks: []

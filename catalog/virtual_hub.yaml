@@ -1,0 +1,20 @@
+kind: virtual_hub
+azureType: azurerm_virtual_hub
+abbr: vhub
+module: Modules/Network/virtualHub
+stack: Network
+category: Network
+icon: virtual-hub
+required: [name, rgName, location]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Virtual hub tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

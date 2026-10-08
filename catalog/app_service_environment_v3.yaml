@@ -1,0 +1,23 @@
+kind: app_service_environment_v3
+azureType: azurerm_app_service_environment_v3
+abbr: ase
+module: Modules/Compute/appServiceEnvironmentV3
+stack: Compute
+category: Compute
+icon: app-service-environment
+required: [name, rgName, subnet_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: App service environment tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: subnet_id
+    kind: subnet
+    required: true
+blocks: []

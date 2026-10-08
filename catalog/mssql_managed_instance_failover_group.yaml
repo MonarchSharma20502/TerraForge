@@ -1,0 +1,19 @@
+kind: mssql_managed_instance_failover_group
+azureType: azurerm_mssql_managed_instance_failover_group
+abbr: mifg
+module: Modules/Data/mssqlManagedInstanceFailoverGroup
+stack: Data
+category: Data
+icon: mssql-managed-instance
+required: [name, location, managed_instance_id, partner_managed_instance_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Failover group tags merged with the stack tags.
+args: {}
+sockets:
+  - name: managed_instance_id
+    kind: mssql_managed_instance
+    required: true
+blocks: []

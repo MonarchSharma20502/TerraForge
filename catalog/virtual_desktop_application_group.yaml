@@ -1,0 +1,23 @@
+kind: virtual_desktop_application_group
+azureType: azurerm_virtual_desktop_application_group
+abbr: avdag
+module: Modules/Desktop/virtualDesktopApplicationGroup
+stack: Desktop
+category: Compute
+icon: virtual-desktop-application-group
+required: [name, rgName, location, type, host_pool_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Application group tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: host_pool_id
+    kind: virtual_desktop_host_pool
+    required: true
+blocks: []

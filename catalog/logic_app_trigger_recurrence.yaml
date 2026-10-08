@@ -1,0 +1,15 @@
+kind: logic_app_trigger_recurrence
+azureType: azurerm_logic_app_trigger_recurrence
+abbr: lat
+module: Modules/Data/logicAppTriggerRecurrence
+stack: Data
+category: Data
+icon: logic-app
+required: [name, logic_app_id, frequency, interval]
+optional: []
+args: {}
+sockets:
+  - name: logic_app_id
+    kind: logic_app_workflow
+    required: true
+blocks: []

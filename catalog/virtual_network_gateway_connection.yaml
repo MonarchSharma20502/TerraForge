@@ -1,0 +1,23 @@
+kind: virtual_network_gateway_connection
+azureType: azurerm_virtual_network_gateway_connection
+abbr: vgwc
+module: Modules/Network/virtualNetworkGatewayConnection
+stack: Network
+category: Network
+icon: virtual-network-gateway-connection
+required: [name, rgName, location, type, virtual_network_gateway_id]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Gateway connection tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: virtual_network_gateway_id
+    kind: virtual_network_gateway
+    required: true
+blocks: []

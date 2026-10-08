@@ -1,0 +1,15 @@
+kind: storage_queue
+azureType: azurerm_storage_queue
+abbr: stq
+module: Modules/Data/storageQueue
+stack: Data
+category: Data
+icon: storage-queue
+required: [name, storage_account_id]
+optional: []
+args: {}
+sockets:
+  - name: storage_account_id
+    kind: storage_account
+    required: true
+blocks: []

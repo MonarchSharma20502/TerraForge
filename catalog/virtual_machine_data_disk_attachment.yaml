@@ -1,0 +1,18 @@
+kind: virtual_machine_data_disk_attachment
+azureType: azurerm_virtual_machine_data_disk_attachment
+abbr: vmdda
+module: Modules/Compute/virtualMachineDataDiskAttachment
+stack: Compute
+category: Compute
+noName: true
+required: [managed_disk_id, virtual_machine_id, lun, caching]
+optional: []
+args: {}
+sockets:
+  - name: managed_disk_id
+    kind: managed_disk
+    required: true
+  - name: virtual_machine_id
+    kind: virtual_machine
+    required: true
+blocks: []

@@ -1,0 +1,24 @@
+kind: application_insights
+azureType: azurerm_application_insights
+abbr: appi
+module: Modules/Monitoring/applicationInsights
+stack: Core
+category: Monitoring
+icon: application-insights
+required: [name, rgName, location, application_type]
+optional:
+  - name: workspace_id
+    type: string
+    default: '""'
+    description: Log Analytics workspace the component reports to.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Application Insights tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+blocks: []

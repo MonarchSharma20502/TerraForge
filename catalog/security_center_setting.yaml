@@ -1,0 +1,12 @@
+kind: security_center_setting
+azureType: azurerm_security_center_setting
+abbr: scs
+module: Modules/Governance/securityCenterSetting
+stack: Governance
+category: Governance
+noName: true
+required: [setting_name, enabled]
+optional: []
+args: {}
+sockets: []
+blocks: []

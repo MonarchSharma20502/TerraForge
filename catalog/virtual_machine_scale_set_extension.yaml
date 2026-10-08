@@ -1,0 +1,19 @@
+kind: virtual_machine_scale_set_extension
+azureType: azurerm_virtual_machine_scale_set_extension
+abbr: vmssx
+module: Modules/Compute/virtualMachineScaleSetExtension
+stack: Compute
+category: Compute
+icon: virtual-machine-extension
+required: [name, virtual_machine_scale_set_id, publisher, type, type_handler_version]
+optional:
+  - name: auto_upgrade_minor_version
+    type: bool
+    default: "true"
+    description: Whether the extension upgrades minor versions automatically.
+args: {}
+sockets:
+  - name: virtual_machine_scale_set_id
+    kind: virtual_machine_scale_set
+    required: true
+blocks: []

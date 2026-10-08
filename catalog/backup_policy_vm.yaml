@@ -1,0 +1,29 @@
+kind: backup_policy_vm
+azureType: azurerm_backup_policy_vm
+abbr: bkp
+module: Modules/Security/backupPolicyVm
+stack: Core
+category: Security
+icon: backup-policy
+required: [name, recovery_vault_name]
+optional:
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Backup policy tags merged with the stack tags.
+args: {}
+sockets:
+  - name: recovery_vault_name
+    kind: recovery_services_vault
+    required: true
+blocks:
+  - name: backup
+    attributes:
+      - name: frequency
+        value: '"Daily"'
+      - name: time
+        value: '"23:00"'
+  - name: retention_daily
+    attributes:
+      - name: count
+        value: "30"

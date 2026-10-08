@@ -1,0 +1,18 @@
+kind: nat_gateway_public_ip_association
+azureType: azurerm_nat_gateway_public_ip_association
+abbr: natpipa
+module: Modules/Network/natGatewayPublicIpAssociation
+stack: Network
+category: Network
+noName: true
+required: [nat_gateway_id, public_ip_address_id]
+optional: []
+args: {}
+sockets:
+  - name: nat_gateway_id
+    kind: nat_gateway
+    required: true
+  - name: public_ip_address_id
+    kind: public_ip
+    required: true
+blocks: []

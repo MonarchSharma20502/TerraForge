@@ -1,0 +1,23 @@
+kind: batch_pool
+azureType: azurerm_batch_pool
+abbr: batp
+module: Modules/Data/batchPool
+stack: Data
+category: Data
+icon: batch-pool
+required: [name, account_name, vm_size, node_agent_sku_id]
+optional:
+  - name: max_autoscale_formula
+    type: string
+    default: '""'
+    description: Autoscale formula of the batch pool.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Batch pool tags merged with the stack tags.
+args: {}
+sockets:
+  - name: account_name
+    kind: batch_account
+    required: true
+blocks: []

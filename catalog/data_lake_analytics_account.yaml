@@ -1,0 +1,27 @@
+kind: data_lake_analytics_account
+azureType: azurerm_data_lake_analytics_account
+abbr: dla
+module: Modules/Data/dataLakeAnalyticsAccount
+stack: Data
+category: Data
+icon: data-lake-analytics
+required: [name, rgName, location, default_store_account_name]
+optional:
+  - name: tier
+    type: string
+    default: '"Consumption"'
+    description: Commitment tier of the Data Lake Analytics account.
+  - name: tags
+    type: map(string)
+    default: "{}"
+    description: Data Lake Analytics tags merged with the stack tags.
+args:
+  rgName: resource_group_name
+sockets:
+  - name: rgName
+    kind: resource_group
+    required: true
+  - name: default_store_account_name
+    kind: data_lake_store
+    required: true
+blocks: []
