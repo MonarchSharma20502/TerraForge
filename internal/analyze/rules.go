@@ -30,7 +30,7 @@ type ruleBase struct {
 	sev  Severity
 }
 
-func (r ruleBase) ID() string    { return r.name }
+func (r ruleBase) ID() string         { return r.name }
 func (r ruleBase) severity() Severity { return r.sev }
 
 // finding is the shorthand every rule uses to build one recommendation.
