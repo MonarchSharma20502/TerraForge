@@ -3,11 +3,11 @@
 //
 // Usage:
 //   const core = await loadCore();
-//   const result = core.generate(specDocument);
+//   const result = core.analyze({ "main.tf": "..." });
 
 // Minimal shape of the functions the wasm module registers on the global.
 interface AutonationGlobal {
-  autonationGenerate: (document: string) => string;
+  autonationAnalyze: (files: string) => string;
   autonationCatalog: () => string;
 }
 
@@ -35,7 +35,7 @@ async function instantiate(): Promise<Core> {
   go.run(result.instance);
 
   const g = window as unknown as AutonationGlobal;
-  if (!g.autonationGenerate || !g.autonationCatalog) {
+  if (!g.autonationAnalyze || !g.autonationCatalog) {
     throw new Error("autonation wasm did not register its functions");
   }
   return new Core(g);
@@ -49,19 +49,19 @@ export class Core {
     this.global = g;
   }
 
-  // catalog returns the resource-kind catalog the palette renders from.
+  // catalog returns the resource-kind catalog the node labels render from.
   catalog(): CatalogEntry[] {
     return JSON.parse(this.global.autonationCatalog());
   }
 
-  // generate runs the whole pipeline and returns the generated tree, the
-  // diagrams and the policy findings.
-  generate(document: string): GenerateResult {
-    return JSON.parse(this.global.autonationGenerate(document));
+  // analyze runs the pipeline over a map of path to file content and returns
+  // the architecture graph, the diagrams and the recommendations.
+  analyze(files: Record<string, string>): AnalyzeResult {
+    return JSON.parse(this.global.autonationAnalyze(JSON.stringify(files)));
   }
 }
 
-// CatalogEntry is the palette-facing projection of one resource kind.
+// CatalogEntry is the label-facing projection of one resource kind.
 export interface CatalogEntry {
   kind: string;
   azureType: string;
@@ -70,35 +70,81 @@ export interface CatalogEntry {
   icon: string;
   stack: string;
   required: string[];
-  optional: Record<string, OptionalVar>;
 }
 
-// OptionalVar is one module variable that carries a safe default.
-export interface OptionalVar {
-  type: string;
-  default: string;
-  description: string;
-}
-
-// GenerateResult is the payload the wasm module returns.
-export interface GenerateResult {
-  files: Record<string, string>;
-  order: string[];
+// AnalyzeResult is the payload the wasm module returns.
+export interface AnalyzeResult {
+  summary: Summary;
+  graph: Graph;
   diagrams: { mermaid: string; d2: string };
-  policy: PolicyResult;
+  findings: Finding[];
+  errors: ParseError[];
+  report: string;
   error?: string;
 }
 
-// PolicyResult is the gate outcome the findings panel renders.
-export interface PolicyResult {
-  passed: boolean;
-  findings: PolicyEntry[];
+// Summary is the headline view of what the code deploys.
+export interface Summary {
+  resourceCount: number;
+  dataCount: number;
+  moduleCallCount: number;
+  providers: string[];
+  byCategory: Record<string, number>;
+  byProvider: Record<string, number>;
 }
 
-// PolicyEntry is one finding.
-export interface PolicyEntry {
+// Graph is the analyzed topology.
+export interface Graph {
+  nodes: Node[];
+  edges: Edge[];
+}
+
+// Node is one block in the graph.
+export interface Node {
+  id: string;
+  type: string;
+  kind: string;
+  name: string;
+  blockKind: "resource" | "data" | "module";
+  module: string;
+  group: string;
+  icon: string;
+  category: string;
+  attributes: Record<string, string>;
+  blocks: Record<string, string>;
+  file: string;
+  line: number;
+}
+
+// Edge is a reference from one block to another.
+export interface Edge {
+  from: string;
+  to: string;
+  label: string;
+  semantic: EdgeSemantic;
+}
+
+// EdgeSemantic is the legend class the canvas draws an edge as.
+export type EdgeSemantic =
+  | "default"
+  | "peering"
+  | "vnet_integration"
+  | "vnet_link"
+  | "web_request"
+  | "onprem";
+
+// Finding is one recommendation.
+export interface Finding {
   rule: string;
-  severity: string;
+  severity: "critical" | "warning";
   message: string;
+  fix: string;
   files?: string[];
+}
+
+// ParseError is one file that could not be parsed.
+export interface ParseError {
+  file: string;
+  line: number;
+  message: string;
 }

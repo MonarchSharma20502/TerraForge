@@ -1,46 +1,40 @@
-// Package main is the autonation CLI entrypoint: a thin wrapper over the core
-// pipeline - parse spec, resolve, emit, run the policy gate, write the tree.
+// Package main is the autonation CLI entrypoint: a thin wrapper over the
+// analysis pipeline - read Terraform, analyze, render diagrams and report.
 package main
 
 import (
 	"fmt"
 	"os"
+	"path/filepath"
+	"sort"
+	"strings"
 
 	"github.com/spf13/cobra"
 
-	"github.com/autonation/autonation/internal/catalog"
-	"github.com/autonation/autonation/internal/emit/diagram"
-	"github.com/autonation/autonation/internal/emit/hcl"
-	"github.com/autonation/autonation/internal/policy"
-	"github.com/autonation/autonation/internal/resolver"
-	"github.com/autonation/autonation/internal/spec"
-	"github.com/autonation/autonation/internal/workspace"
+	catalogdata "github.com/autonation/autonation/catalog"
+	"github.com/autonation/autonation/internal/analyze"
 )
 
-// Version is the generator version, recorded in the manifest.
-const Version = "0.1.0"
+// Version is the analyzer version, recorded in the report header.
+const Version = "0.2.0"
 
-var (
-	specPath string
-	outDir   string
-)
+var outDir string
 
 // rootCmd is the CLI entrypoint.
 var rootCmd = &cobra.Command{
 	Use:   "autonation",
-	Short: "UI-driven Azure Terraform generator",
-	Long: "Auto-nation turns an architecture description into production-ready " +
-		"Azure Terraform in the user's exact house style.",
+	Short: "Terraform code analyzer",
+	Long: "Auto-nation reads Terraform source, shows the architecture it will " +
+		"deploy, and reports best-practice recommendations.",
 }
 
-// generateCmd generates the three-tier tree from a spec.
-var generateCmd = &cobra.Command{
-	Use:   "generate [spec]",
-	Short: "Generate the Terraform tree from a spec",
+// analyzeCmd analyzes Terraform at a path and writes the diagrams and report.
+var analyzeCmd = &cobra.Command{
+	Use:   "analyze [path]",
+	Short: "Analyze Terraform and report the architecture and recommendations",
 	Args:  cobra.ExactArgs(1),
 	RunE: func(cmd *cobra.Command, args []string) error {
-		specPath = args[0]
-		return runGenerate(specPath, outDir)
+		return runAnalyze(args[0], outDir)
 	},
 }
 
@@ -58,69 +52,131 @@ func main() {
 }
 
 func init() {
-	rootCmd.AddCommand(generateCmd)
-	generateCmd.Flags().StringVarP(&outDir, "out", "o", ".", "output directory")
+	rootCmd.AddCommand(analyzeCmd)
+	analyzeCmd.Flags().StringVarP(&outDir, "out", "o", "", "write diagrams and report to this directory")
 }
 
-// runGenerate is the whole pipeline. It is also what the WASM build calls.
-func runGenerate(specPath, outDir string) error {
-	raw, err := os.ReadFile(specPath)
+// runAnalyze is the whole pipeline. It is also what the WASM build mirrors.
+func runAnalyze(path, outDir string) error {
+	files, err := readTerraform(path)
 	if err != nil {
-		return fmt.Errorf("read spec: %w", err)
+		return fmt.Errorf("read terraform: %w", err)
+	}
+	if len(files) == 0 {
+		return fmt.Errorf("no .tf or .tf.json files found under %s", path)
 	}
 
-	bp, err := spec.ParseDocument(raw)
-	if err != nil {
-		return fmt.Errorf("parse spec: %w", err)
-	}
-
-	cat, err := catalog.LoadDefault()
+	cat, err := catalogdata.Load()
 	if err != nil {
 		return fmt.Errorf("load catalog: %w", err)
 	}
 
-	plan, err := resolver.New(cat).Resolve(bp)
-	if err != nil {
-		return fmt.Errorf("resolve: %w", err)
-	}
+	result := analyze.New(cat).Analyze(files)
 
-	files, err := hcl.New(cat).Emit(plan)
-	if err != nil {
-		return fmt.Errorf("emit hcl: %w", err)
-	}
+	printSummary(os.Stdout, result)
 
-	fileMap := map[string]string{}
-	for _, f := range files.Files {
-		fileMap[f.Path] = f.Content
-	}
-
-	// Diagrams come from the same IR walk.
-	diag := diagram.New(cat)
-	fileMap["architecture.mmd"] = diag.Mermaid(plan)
-	fileMap["architecture.d2"] = diag.D2(plan)
-
-	// The policy gate runs on every generation.
-	result := policy.New(cat).Check(plan, fileMap)
-	if !result.Passed {
-		for _, f := range result.Findings {
-			if f.Severity == policy.Critical {
-				fmt.Fprintf(os.Stderr, "  %s: %s\n", f.Rule, f.Message)
-			}
+	if outDir != "" {
+		if err := writeOutput(outDir, result); err != nil {
+			return fmt.Errorf("write output: %w", err)
 		}
-		return fmt.Errorf("policy gate failed: %d finding(s)", len(result.Findings))
+	}
+	return nil
+}
+
+// readTerraform collects every .tf and .tf.json file at or under path, keyed by
+// the path as the user will see it in the report.
+func readTerraform(path string) (map[string]string, error) {
+	info, err := os.Stat(path)
+	if err != nil {
+		return nil, err
+	}
+	if !info.IsDir() {
+		content, err := os.ReadFile(path)
+		if err != nil {
+			return nil, err
+		}
+		return map[string]string{filepath.Base(path): string(content)}, nil
 	}
 
-	manifest := &workspace.Manifest{
-		APIVersion:       "autonation/v1",
-		GeneratorVersion: Version,
-		SpecHash:         workspace.HashSpec(raw),
-		Files:            workspace.HashFiles(fileMap),
+	files := map[string]string{}
+	err = filepath.WalkDir(path, func(p string, d os.DirEntry, err error) error {
+		if err != nil {
+			return err
+		}
+		if d.IsDir() {
+			// A .terraform directory holds downloaded providers, not user code.
+			if d.Name() == ".terraform" || d.Name() == ".git" {
+				return filepath.SkipDir
+			}
+			return nil
+		}
+		name := d.Name()
+		if !strings.HasSuffix(name, ".tf") && !strings.HasSuffix(name, ".tf.json") {
+			return nil
+		}
+		content, err := os.ReadFile(p)
+		if err != nil {
+			return err
+		}
+		rel, err := filepath.Rel(path, p)
+		if err != nil {
+			rel = p
+		}
+		files[filepath.ToSlash(rel)] = string(content)
+		return nil
+	})
+	if err != nil {
+		return nil, err
 	}
+	return files, nil
+}
 
-	if err := workspace.New(outDir).Write(fileMap, manifest); err != nil {
-		return fmt.Errorf("write workspace: %w", err)
+// printSummary writes the headline view to stdout so a run with no --out still
+// tells the user something useful.
+func printSummary(w *os.File, r analyze.Result) {
+	fmt.Fprintf(w, "analyzed %d resource(s), %d data source(s), %d module call(s)\n",
+		r.Summary.ResourceCount, r.Summary.DataCount, r.Summary.ModuleCallCount)
+	if len(r.Summary.Providers) > 0 {
+		fmt.Fprintf(w, "providers: %s\n", strings.Join(r.Summary.Providers, ", "))
 	}
+	critical := 0
+	for _, f := range r.Findings {
+		if f.Severity == analyze.Critical {
+			critical++
+		}
+	}
+	fmt.Fprintf(w, "%d finding(s): %d critical, %d warning\n",
+		len(r.Findings), critical, len(r.Findings)-critical)
+	for _, e := range r.Errors {
+		if e.Line > 0 {
+			fmt.Fprintf(w, "parse error: %s:%d: %s\n", e.File, e.Line, e.Message)
+			continue
+		}
+		fmt.Fprintf(w, "parse error: %s: %s\n", e.File, e.Message)
+	}
+}
 
-	fmt.Fprintf(os.Stdout, "generated %d files into %s\n", len(fileMap), outDir)
+// writeOutput writes the diagrams and the report to dir.
+func writeOutput(dir string, r analyze.Result) error {
+	if err := os.MkdirAll(dir, 0o755); err != nil {
+		return err
+	}
+	writes := map[string]string{
+		"architecture.mmd": r.Diagrams.Mermaid,
+		"architecture.d2":  r.Diagrams.D2,
+		"report.md":        analyze.Report(r),
+	}
+	paths := make([]string, 0, len(writes))
+	for p := range writes {
+		paths = append(paths, p)
+	}
+	sort.Strings(paths)
+	for _, p := range paths {
+		full := filepath.Join(dir, p)
+		if err := os.WriteFile(full, []byte(writes[p]), 0o644); err != nil {
+			return err
+		}
+		fmt.Fprintf(os.Stdout, "wrote %s\n", full)
+	}
 	return nil
 }
